@@ -1,0 +1,37 @@
+{
+  "name": "@sighmir/altv-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sighmir/altv-proxy.git"
+  },
+  "keywords": [
+    "altmp",
+    "altv",
+    "node",
+    "node-module",
+    "js-module",
+    "gta",
+    "gta5",
+    "gtav"
+  ],
+  "author": "Sighmir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sighmir/altv-proxy/issues"
+  },
+  "homepage": "https://github.com/Sighmir/altv-proxy#readme",
+  "type": "module",
+  "devDependencies": {
+    "@altv/types-client": "^1.7.7",
+    "@altv/types-natives": "^1.4.2",
+    "@altv/types-server": "^1.9.8",
+    "@altv/types-shared": "^1.0.1",
+    "@altv/types-webview": "^1.0.2"
+  }
+}
