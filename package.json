@@ -1,8 +1,7 @@
 {
-  "name": "@sighmir/altv-proxy",
+  "name": "@sighmir/altvrp",
   "version": "1.0.0",
-  "description": "",
-  "main": "",
+  "description": "alt:V RP framework",
   "scripts": {
     "build": "tsc --build"
   },
@@ -11,6 +10,8 @@
     "url": "git+https://github.com/Sighmir/altv-proxy.git"
   },
   "keywords": [
+    "sighmir",
+    "vrp",
     "altmp",
     "altv",
     "node",

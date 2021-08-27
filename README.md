@@ -1,3 +1,3 @@
-# alt:V Proxy
+# alt:vRP
 
-Proxy to simulate event based client-server communication using functions to facilitate asynchronous interactions.
+[alt:V](https://altv.mp/) RP framework
