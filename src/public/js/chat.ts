@@ -54,81 +54,10 @@ const checkOverflow = () => {
   }
 };
 
-const openChat = (insertSlash: boolean) => {
-  clearTimeout(timeout);
-
-  if (!chatOpened) {
-    document.querySelector(".chatbox")!.classList.add("active");
-
-    if (insertSlash) {
-      msgInputLine!.value = "/";
-    }
-
-    msgInputBlock!.style.display = "block";
-    msgInputBlock!.style.opacity = "1";
-    msgInputLine!.focus();
-
-    chatOpened = true;
-  }
-};
-
-const closeChat = () => {
-  if (chatOpened) {
-    document.querySelector(".chatbox")!.classList.remove("active");
-
-    msgInputLine!.blur();
-    msgInputBlock!.style.display = "none";
-
-    chatOpened = false;
-  }
-};
-
-window.addEventListener("load", () => {
-  messagesBlock = document.querySelector(".messages");
-  msgListBlock = document.querySelector(".msglist");
-  msgInputBlock = document.querySelector(".msginput");
-  msgInputLine = document.querySelector(".msginput input");
-
-  document.querySelector("#message")!.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    proxy.chatMessage(msgInputLine!.value);
-
-    saveBuffer();
-    closeChat();
-
-    msgInputLine!.value = "";
-  });
-
-  msgInputLine!.addEventListener("keydown", (e) => {
-    if (e.code === "Tab") {
-      e.preventDefault();
-    } else if (e.code == "ArrowDown") {
-      e.preventDefault();
-
-      if (currentBufferIndex > 0) {
-        loadBuffer(--currentBufferIndex);
-      } else if (currentBufferIndex == 0) {
-        currentBufferIndex = -1;
-        msgInputLine!.value = "";
-      }
-    } else if (e.code == "ArrowUp") {
-      e.preventDefault();
-
-      if (currentBufferIndex < buffer.length - 1) {
-        loadBuffer(++currentBufferIndex);
-      }
-    }
-  });
-
-  proxy.chatLoaded();
-});
-
 const saveBuffer = () => {
   if (buffer.length > 100) {
     buffer.pop();
   }
-
   buffer.unshift(msgInputLine!.value);
   currentBufferIndex = -1;
 };
@@ -143,9 +72,7 @@ const highlightChat = () => {
     top: msgListBlock!.scrollHeight,
     behavior: "smooth",
   });
-
   document.querySelector(".chatbox")!.classList.add("active");
-
   clearTimeout(timeout);
   timeout = setTimeout(
     () => document.querySelector(".chatbox")!.classList.remove("active"),
@@ -153,21 +80,71 @@ const highlightChat = () => {
   );
 };
 
-const addString = (text: string) => {
+proxy.openChat = () => {
+  clearTimeout(timeout);
+  if (!chatOpened) {
+    document.querySelector(".chatbox")!.classList.add("active");
+    msgInputBlock!.style.display = "block";
+    msgInputBlock!.style.opacity = "1";
+    msgInputLine!.focus();
+    chatOpened = true;
+  }
+};
+
+proxy.closeChat = () => {
+  if (chatOpened) {
+    document.querySelector(".chatbox")!.classList.remove("active");
+    msgInputLine!.blur();
+    msgInputBlock!.style.display = "none";
+    chatOpened = false;
+  }
+};
+
+proxy.addString = (text: string, prefix: string = "") => {
   if (messagesBlock!.children.length > 100) {
     messagesBlock!.removeChild(messagesBlock!.children[0]);
   }
-
   const msg = document.createElement("p");
-  msg.innerHTML = text;
+  msg.innerHTML = prefix + colorify(text);
   messagesBlock!.appendChild(msg);
-
   checkOverflow();
   highlightChat();
 };
 
-proxy.addString = (text) => addString(colorify(text));
-proxy.addMessage = (name, text) =>
-  addString("<b>" + name + ": </b>" + colorify(text));
-proxy.openChat = openChat;
-proxy.closeChat = closeChat;
+proxy.addMessage = (name, text) => proxy.addString(text, `<b>${name}: </b>`);
+
+window.addEventListener("load", () => {
+  messagesBlock = document.querySelector(".messages");
+  msgListBlock = document.querySelector(".msglist");
+  msgInputBlock = document.querySelector(".msginput");
+  msgInputLine = document.querySelector(".msginput input");
+
+  document.querySelector("#message")!.addEventListener("submit", (e) => {
+    e.preventDefault();
+    proxy.chatMessage(msgInputLine!.value);
+    saveBuffer();
+    proxy.closeChat();
+    msgInputLine!.value = "";
+  });
+
+  msgInputLine!.addEventListener("keydown", (e) => {
+    if (e.code === "Tab") {
+      e.preventDefault();
+    } else if (e.code == "ArrowDown") {
+      e.preventDefault();
+      if (currentBufferIndex > 0) {
+        loadBuffer(--currentBufferIndex);
+      } else if (currentBufferIndex == 0) {
+        currentBufferIndex = -1;
+        msgInputLine!.value = "";
+      }
+    } else if (e.code == "ArrowUp") {
+      e.preventDefault();
+      if (currentBufferIndex < buffer.length - 1) {
+        loadBuffer(++currentBufferIndex);
+      }
+    }
+  });
+
+  proxy.chatLoaded();
+});

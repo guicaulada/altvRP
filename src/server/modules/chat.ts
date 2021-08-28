@@ -37,9 +37,7 @@ proxy.server.chatMessage = (player, msg) => {
     if (msg.length > 0) {
       logger.info("[chat:msg] " + player.name + ": " + msg);
 
-      alt.emitClient(
-        null,
-        "chat:message",
+      proxy.client.chatMessage(
         player.name,
         msg.replace(/</g, "&lt;").replace(/'/g, "&#39").replace(/"/g, "&#34")
       );

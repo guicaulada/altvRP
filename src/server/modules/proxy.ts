@@ -35,7 +35,7 @@ export const server = new Proxy(new Map<string, Handler>(), {
       logger.debug(`${event} ${player.id} ${args} <===`);
       const result = handler(player, ...args);
       alt.emitClient(player, id, result);
-      logger.debug(`${event} ${player.id} ${args} ===>`);
+      logger.debug(`${event} ${player.id} ${args} !===>`);
     });
     return true;
   },
@@ -49,7 +49,7 @@ export const client = new Proxy(new Map<string, Handler>(), {
         if (isPlayer(args[0])) {
           const player = args.shift();
           alt.onceClient(id, (_, result) => {
-            logger.debug(`${event} ${player.id} ${args} <===`);
+            logger.debug(`${event} ${player.id} ${args} <===!`);
             resolve(result);
           });
           logger.debug(`${event} ${player.id} ${args} ===>`);
@@ -60,7 +60,7 @@ export const client = new Proxy(new Map<string, Handler>(), {
           alt.onClient(id, (player, result) => {
             results.set(player.id, result);
             if (results.size >= onlinePlayers) {
-              logger.debug(`${event} -1 ${args} <===`);
+              logger.debug(`${event} -1 ${args} <===!`);
               resolve(results);
             }
           });
