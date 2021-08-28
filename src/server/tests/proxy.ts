@@ -1,8 +1,11 @@
 import * as alt from "alt-server";
+import { getLogger } from "../../shared/modules/logger";
 import * as proxy from "../modules/proxy";
 
+const logger = getLogger("altvrp:test:proxy");
+
 alt.on("playerConnect", async (player) =>
-  console.log(
+  logger.info(
     await proxy.client.getHello(player, "ole", "dole", "dof"),
     await proxy.client.getHello("kinka", "lane", "cof")
   )
@@ -13,7 +16,7 @@ try {
     return "NOT ALLOWED TO SET CLIENT FUNCTIONS ON SERVER";
   };
 } catch {
-  console.log("Proxy error check succeeded!");
+  logger.info("Proxy error check succeeded!");
 }
 
 proxy.server.getHello = (
@@ -21,11 +24,11 @@ proxy.server.getHello = (
   arg2: string,
   arg3: string
 ) => {
-  console.log(arg1, arg2, arg3);
+  logger.info(arg1, arg2, arg3);
   if (arg1 instanceof alt.Player) {
     return "HELLO CLIENT, FROM SERVER";
   }
   return "HELLO SERVER, FROM SERVER";
 };
 
-console.log(proxy.server.getHello("call", "function", "directly"));
+logger.info(proxy.server.getHello("call", "function", "directly"));

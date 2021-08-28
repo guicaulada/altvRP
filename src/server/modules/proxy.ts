@@ -1,7 +1,10 @@
 import * as alt from "alt-server";
+import { getLogger } from "../../shared/modules/logger";
 
 type Handler = (...args: any[]) => any;
 type Proxy<T> = Map<string, T> & { [key: string]: T };
+
+const logger = getLogger("altvrp:proxy", "DEBUG");
 
 const getProxyCallbackId = (event: string) =>
   `${event}:${Math.round(new Date().getTime())}`;
@@ -9,6 +12,16 @@ const getProxyCallbackId = (event: string) =>
 const isPlayer = (p: alt.Player | alt.Player[]) =>
   p instanceof alt.Player ||
   (p instanceof Array && p.every((i) => i instanceof alt.Player));
+
+export const cmd = new Proxy(new Map<string, Handler>(), {
+  get: (proxy, command: string) => {
+    return proxy.get(command);
+  },
+  set: (proxy, command: string, handler: Handler) => {
+    proxy.set(command, handler);
+    return true;
+  },
+}) as Proxy<Handler>;
 
 export const server = new Proxy(new Map<string, Handler>(), {
   get: (proxy, event: string) => {
@@ -19,8 +32,10 @@ export const server = new Proxy(new Map<string, Handler>(), {
     proxy.set(event, handler);
     alt.onClient(event, (player, ...args) => {
       const id = args.shift();
+      logger.debug(`${event} ${player.id} ${args} <===`);
       const result = handler(player, ...args);
       alt.emitClient(player, id, result);
+      logger.debug(`${event} ${player.id} ${args} ===>`);
     });
     return true;
   },
@@ -33,7 +48,11 @@ export const client = new Proxy(new Map<string, Handler>(), {
         const id = getProxyCallbackId(event);
         if (isPlayer(args[0])) {
           const player = args.shift();
-          alt.onceClient(id, (_, result) => resolve(result));
+          alt.onceClient(id, (_, result) => {
+            logger.debug(`${event} ${player.id} ${args} <===`);
+            resolve(result);
+          });
+          logger.debug(`${event} ${player.id} ${args} ===>`);
           alt.emitClient(player, event, id, ...args);
         } else {
           const results = new Map<number, any>();
@@ -41,10 +60,12 @@ export const client = new Proxy(new Map<string, Handler>(), {
           alt.onClient(id, (player, result) => {
             results.set(player.id, result);
             if (results.size >= onlinePlayers) {
+              logger.debug(`${event} -1 ${args} <===`);
               resolve(results);
             }
           });
           alt.emitAllClients(event, id, ...args);
+          logger.debug(`${event} -1 ${args} ===>`);
         }
       });
     };
