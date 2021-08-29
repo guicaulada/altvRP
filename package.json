@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "alt:V RP framework",
   "scripts": {
-    "build": "npx babel src --out-dir dist --extensions .ts --copy-files",
-    "watch": "npx babel --watch src --out-dir dist --extensions .ts --copy-files"
+    "build": "rmdir /s /q dist && npx babel src --out-dir dist --extensions .ts --copy-files",
+    "watch": "rmdir /s /q dist && npx babel --watch src --out-dir dist --extensions .ts --copy-files"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,12 @@
     "@altv/types-webview": "^1.0.2",
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
-    "@babel/preset-typescript": "^7.15.0"
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.7.5"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1"
   }
 }

@@ -13,16 +13,6 @@ const isPlayer = (p: alt.Player | alt.Player[]) =>
   p instanceof alt.Player ||
   (p instanceof Array && p.every((i) => i instanceof alt.Player));
 
-export const cmd = new Proxy(new Map<string, Handler>(), {
-  get: (proxy, command: string) => {
-    return proxy.get(command);
-  },
-  set: (proxy, command: string, handler: Handler) => {
-    proxy.set(command, handler);
-    return true;
-  },
-}) as Proxy<Handler>;
-
 export const server = new Proxy(new Map<string, Handler>(), {
   get: (proxy, event: string) => {
     return proxy.get(event);

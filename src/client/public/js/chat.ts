@@ -1,7 +1,7 @@
 let chatOpened = false;
 let buffer = [] as string[];
 let currentBufferIndex = -1;
-let timeout: number;
+let timeout: ReturnType<typeof setTimeout>;
 let messagesBlock: HTMLElement | null;
 let msgListBlock: HTMLElement | null;
 let msgInputBlock: HTMLElement | null;

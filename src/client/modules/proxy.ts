@@ -1,9 +1,9 @@
 import * as alt from "alt-client";
 import { getLogger } from "../../shared/modules/logger";
 
-type Handler = (...args: any[]) => any;
-type Proxy<T> = Map<string, T> & { [key: string]: T };
-type WebProxy<T> = { webview: alt.WebView } & Proxy<T>;
+export type Handler = (...args: any[]) => any;
+export type Proxy = Map<string, Handler> & { [key: string]: Handler };
+export type WebProxy = { webview: alt.WebView } & Proxy;
 
 const logger = getLogger("altvrp:proxy", "DEBUG");
 
@@ -26,7 +26,7 @@ export const client = new Proxy(new Map<string, Handler>(), {
     });
     return true;
   },
-}) as Proxy<Handler>;
+}) as Proxy;
 
 export const server = new Proxy(new Map<string, Handler>(), {
   get: (_proxy, event: string) => {
@@ -45,7 +45,7 @@ export const server = new Proxy(new Map<string, Handler>(), {
   set: () => {
     throw TypeError("You can't set server events on client-side.");
   },
-}) as Proxy<Handler>;
+}) as Proxy;
 
 export const webview = (view: alt.WebView) => {
   return new Proxy(new Map<string, Handler>(), {
@@ -79,5 +79,5 @@ export const webview = (view: alt.WebView) => {
       });
       return true;
     },
-  }) as WebProxy<Handler>;
+  }) as WebProxy;
 };
