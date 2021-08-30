@@ -26,10 +26,10 @@ const proxy = new Proxy(new Map<string, Handler>(), {
   set: (prxy, event: string, handler: Handler) => {
     if (prxy.has(event)) alt.off(event, prxy.get(event)!);
     prxy.set(event, handler);
-    alt.on(event, (...args) => {
+    alt.on(event, async (...args) => {
       const id = args.shift();
       logger.debug(`${event} ${args} <=@=`);
-      const result = handler(...args);
+      const result = await handler(...args);
       alt.emit(id, result);
       logger.debug(`${event} ${args} !=@=>`);
     });

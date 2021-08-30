@@ -20,10 +20,10 @@ export const server = new Proxy(new Map<string, Handler>(), {
   set: (proxy, event: string, handler: Handler) => {
     if (proxy.has(event)) alt.offClient(event, proxy.get(event)!);
     proxy.set(event, handler);
-    alt.onClient(event, (player, ...args) => {
+    alt.onClient(event, async (player, ...args) => {
       const id = args.shift();
       logger.debug(`${event} ${player.id} ${args} <===`);
-      const result = handler(player, ...args);
+      const result = await handler(player, ...args);
       alt.emitClient(player, id, result);
       logger.debug(`${event} ${player.id} ${args} !===>`);
     });

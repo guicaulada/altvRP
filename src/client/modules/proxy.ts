@@ -17,10 +17,10 @@ export const client = new Proxy(new Map<string, Handler>(), {
   set: (proxy, event: string, handler: Handler) => {
     if (proxy.has(event)) alt.offServer(event, proxy.get(event)!);
     proxy.set(event, handler);
-    alt.onServer(event, (...args) => {
+    alt.onServer(event, async (...args) => {
       const id = args.shift();
       logger.debug(`${event} ${args} <===`);
-      const result = handler(...args);
+      const result = await handler(...args);
       alt.emitServer(id, result);
       logger.debug(`${event} ${args} !===>`);
     });
@@ -70,10 +70,10 @@ export const webview = (view: alt.WebView) => {
       }
       if (proxy.has(event)) view.off(event, proxy.get(event)!);
       proxy.set(event, handler);
-      view.on(event, (...args) => {
+      view.on(event, async (...args) => {
         const id = args.shift();
         logger.debug(`${event} ${args} <=@=`);
-        const result = handler(...args);
+        const result = await handler(...args);
         view.emit(id, result);
         logger.debug(`${event} ${args} !=@=>`);
       });
