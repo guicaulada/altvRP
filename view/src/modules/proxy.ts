@@ -39,4 +39,12 @@ const proxy = new Proxy(new Map<string, Handler>(), {
   },
 }) as Proxy<Handler>;
 
+if (!window.alt) {
+  window.alt = {
+    on: () => true,
+    off: () => true,
+    emit: () => true,
+  };
+}
+
 export default proxy;
