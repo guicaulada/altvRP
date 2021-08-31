@@ -13,7 +13,7 @@ let opened = false;
 
 proxy.client.loadChat = () => {
   const view = proxy.webview(
-    new alt.WebView("http://resource/dist/client/public/html/chat.html")
+    new alt.WebView("http://sighmir.io:7789/view/chat")
   );
 
   const addMessage = (name: string | null, text: string) => {
