@@ -5,7 +5,9 @@
   "compilerOptions": {
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/@altv"
+      "./node_modules/@altv",
+      "next-env.d.ts",
+      "alt-env.d.ts"
     ],
     "module": "ESNext",
     "target": "ESNext",
@@ -32,6 +34,19 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "allowJs": false,
-    "composite": false
-  }
+    "composite": false,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
