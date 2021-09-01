@@ -1,5 +1,15 @@
 {
   "presets": [
     "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "transform-inline-environment-variables",
+      {
+        "include": [
+          "ALTV_APP_CLIENT"
+        ]
+      }
+    ]
   ]
 }

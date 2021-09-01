@@ -7,11 +7,13 @@ proxy.client.loadLogin = (state: string) => {
   view = proxy.webview(
     new alt.WebView(
       "https://discord.com/api/oauth2/authorize?" +
-        "client_id=880926468610343003" +
-        "&redirect_uri=http%3A%2F%2Fsighmir.io%3A7789%2Fauthorize" +
+        `client_id=${process.env.ALTV_APP_CLIENT}` +
+        `&redirect_uri=${encodeURIComponent(
+          "http://sighmir.io:7789/authorize"
+        )}` +
         `&state=${encodeURIComponent(state)}` +
         "&response_type=code" +
-        "&scope=identify%20email"
+        `&scope=${encodeURIComponent("identify email")}`
     )
   );
   alt.toggleGameControls(false);
