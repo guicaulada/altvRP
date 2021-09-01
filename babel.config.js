@@ -1,16 +1,16 @@
-{
-  "presets": [
+module.exports = {
+  presets: [
     "@babel/preset-typescript",
-    "next/babel"
+    require.resolve('next/babel')
   ],
-  "plugins": [
+  plugins: [
     [
       "transform-inline-environment-variables",
       {
-        "include": [
+        include: [
           "ALTV_APP_CLIENT"
         ]
       }
     ]
   ]
-}
+};
