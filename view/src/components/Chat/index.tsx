@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import colorify from '../../modules/colorify';
 import proxy from '../../modules/proxy';
-import './style.css';
+import { Chatbox, MessageInput, MessageList } from './style';
+import './style.ts';
 
 function Chat() {
   const buffer = [] as string[];
-  const chatboxRef = React.createRef<HTMLDivElement>();
+  const [active, setActive] = React.useState<boolean>(false);
+  const [msgInputStyle, setMsgInputStyle] = React.useState<CSSProperties>({});
+  const [inputValue, setInputValue] = React.useState<string>("");
   const messagesRef = React.createRef<HTMLDivElement>();
   const msgListRef = React.createRef<HTMLDivElement>();
-  const msgInputDivRef = React.createRef<HTMLDivElement>();
-  const msgInputRef = React.createRef<HTMLInputElement>();
 
   let timeout: ReturnType<typeof setTimeout>;
   let currentBufferIndex = -1;
@@ -29,12 +30,12 @@ function Chat() {
     if (buffer.length > 100) {
       buffer.pop();
     }
-    buffer.unshift(msgInputRef.current!.value);
+    buffer.unshift(inputValue);
     currentBufferIndex = -1;
   };
 
   const loadBuffer = (idx: number) => {
-    msgInputRef.current!.value = buffer[idx];
+    setInputValue(buffer[idx])
   };
 
   const highlightChat = () => {
@@ -43,10 +44,10 @@ function Chat() {
       top: msgListRef.current!.scrollHeight,
       behavior: "smooth",
     });
-    chatboxRef.current!.classList.add("active");
+    setActive(true);
     clearTimeout(timeout);
     timeout = setTimeout(
-      () => chatboxRef.current!.classList.remove("active"),
+      () => setActive(false),
       4000
     );
   };
@@ -54,9 +55,8 @@ function Chat() {
   proxy.openChat = () => {
     clearTimeout(timeout);
     if (!chatOpened) {
-      chatboxRef.current!.classList.add("active");
-      msgInputDivRef.current!.style.display = "block";
-      msgInputDivRef.current!.style.opacity = "1";
+      setActive(true);
+      setMsgInputStyle({display: 'block', opacity: 1})
       msgInputRef.current!.focus();
       chatOpened = true;
     }
@@ -64,9 +64,9 @@ function Chat() {
 
   proxy.closeChat = () => {
     if (chatOpened) {
-      chatboxRef.current!.classList.remove("active");
+      setActive(false);
       msgInputRef.current!.blur();
-      msgInputDivRef.current!.style.display = "none";
+      setMsgInputStyle({display: 'none'})
       chatOpened = false;
     }
   };
@@ -90,10 +90,10 @@ function Chat() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    proxy.chatMessage(msgInputRef.current!.value);
+    proxy.chatMessage(inputValue);
     saveBuffer();
     proxy.closeChat();
-    msgInputRef.current!.value = "";
+    setInputValue("")
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -105,7 +105,7 @@ function Chat() {
         loadBuffer(--currentBufferIndex);
       } else if (currentBufferIndex === 0) {
         currentBufferIndex = -1;
-        msgInputRef.current!.value = "";
+        setInputValue("")
       }
     } else if (e.code === "ArrowUp") {
       e.preventDefault();
@@ -115,18 +115,30 @@ function Chat() {
     }
   }
 
+  const chatboxClasses = () => `chatbox ${active ? "active" : ""}`
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
+  }
+
   return (
     <div className="content">
-      <div className="chatbox" ref={chatboxRef}>
-        <div className="msglist" ref={msgListRef}>
+      <Chatbox className={chatboxClasses()}>
+        <MessageList className="msglist" ref={msgListRef}>
           <div className="messages" ref={messagesRef}></div>
-        </div>
-        <div className="msginput" ref={msgInputDivRef}>
+        </MessageList>
+        <MessageInput className="msginput" style={msgInputStyle}>
           <form id="message" onSubmit={handleSubmit}>
-            <input type="text" spellCheck="false" onKeyDown={handleKeyDown} ref={msgInputRef} />
+            <input 
+              type="text"
+              spellCheck="false"
+              value={inputValue}
+              onKeyDown={handleKeyDown}
+              onChange={handleInputChange}
+            />
           </form>
-        </div>
-      </div>
+        </MessageInput>
+      </Chatbox>
     </div>
   );
 }
