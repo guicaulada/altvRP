@@ -9,7 +9,7 @@ proxy.client.loadLogin = (state: string) => {
       "https://discord.com/api/oauth2/authorize?" +
         `client_id=${process.env.ALTV_APP_CLIENT}` +
         `&redirect_uri=${encodeURIComponent(
-          "http://sighmir.io:7789/authorize"
+          "http://sighmir.io:7789/api/authorize"
         )}` +
         `&state=${encodeURIComponent(state)}` +
         "&response_type=code" +

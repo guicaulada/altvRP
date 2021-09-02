@@ -1,3 +1,4 @@
+/// <reference types="@altv/types-webview" />
 import { getLogger } from "./logger";
 
 const logger = getLogger("altvrp:public:proxy", "DEBUG");

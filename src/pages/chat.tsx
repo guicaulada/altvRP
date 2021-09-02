@@ -58,7 +58,7 @@ function Chat() {
         setActive(true);
         setMsgInputStyle({display: 'block', opacity: 1})
         // msgInputRef.current!.focus();
-        chatOpened = true;
+        // chatOpened = true;
       }
     };
 
@@ -67,7 +67,7 @@ function Chat() {
         setActive(false);
         // msgInputRef.current!.blur();
         setMsgInputStyle({display: 'none'})
-        chatOpened = false;
+        // chatOpened = false;
       }
     };
 
