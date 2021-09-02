@@ -1,27 +1,30 @@
-import React, { CSSProperties } from 'react';
-import colorify from '../view/modules/colorify';
-import proxy from '../view/modules/proxy';
-import { Chatbox, MessageInput, MessageList } from '../view/styles/chat';
+import React, { CSSProperties, ReactElement } from 'react';
+import colorify from './modules/colorify';
+import proxy from './modules/proxy';
+import { Chatbox, MessageInput, MessageList } from './styles/chat';
 
 function Chat() {
   const buffer = [] as string[];
   const [active, setActive] = React.useState<boolean>(false);
-  const [msgInputStyle, setMsgInputStyle] = React.useState<CSSProperties>({});
+  const [overflowed, setOverflowed] = React.useState<boolean>(false);
+  const [chatOpened, setChatOpened] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<string>("");
-  const messagesRef = React.createRef<HTMLDivElement>();
+  const [msgInputStyle, setMsgInputStyle] = React.useState<CSSProperties>({});
+  const [messages, setMessages] = React.useState<ReactElement[]>([])
+  const msgInputRef = React.createRef<HTMLInputElement>();
   const msgListRef = React.createRef<HTMLDivElement>();
+  const messagesRef = React.createRef<HTMLDivElement>();
 
   let timeout: ReturnType<typeof setTimeout>;
   let currentBufferIndex = -1;
-  let chatOpened = false;
 
   const checkOverflow = () => {
     if (messagesRef.current!.clientHeight > msgListRef.current!.clientHeight) {
-      if (!msgListRef.current!.classList.contains("overflowed")) {
-        msgListRef.current!.classList.add("overflowed");
+      if (!overflowed) {
+        setOverflowed(true)
       }
-    } else if (msgListRef.current!.classList.contains("overflowed")) {
-      msgListRef.current!.classList.remove("overflowed");
+    } else if (overflowed) {
+        setOverflowed(false)
     }
   };
 
@@ -51,38 +54,50 @@ function Chat() {
     );
   };
 
+  const addMessage = (msg: ReactElement) => {
+    setMessages((messages) => {
+      messages.push(msg)
+      return messages
+    })
+  }
+
+  const removeOldestMessage = () => {
+    setMessages((messages) => {
+      messages.shift()
+      return messages
+    })
+  }
+
   React.useEffect(() => {    
     proxy.openChat = () => {
       clearTimeout(timeout);
       if (!chatOpened) {
         setActive(true);
         setMsgInputStyle({display: 'block', opacity: 1})
-        // msgInputRef.current!.focus();
-        // chatOpened = true;
+        msgInputRef.current!.focus();
+        setChatOpened(true);
       }
     };
 
     proxy.closeChat = () => {
       if (chatOpened) {
         setActive(false);
-        // msgInputRef.current!.blur();
+        msgInputRef.current!.blur();
         setMsgInputStyle({display: 'none'})
-        // chatOpened = false;
+        setChatOpened(false);
       }
     };
 
     proxy.addString = (text: string, prefix: string = "") => {
-      if (messagesRef.current!.children.length > 100) {
-        messagesRef.current!.removeChild(messagesRef.current!.children[0]);
+      if (messages.length > 100) {
+        removeOldestMessage()
       }
-      const msg = document.createElement("p");
-      msg.innerHTML = prefix + colorify(text);
-      messagesRef.current!.appendChild(msg);
+      addMessage(<p> {prefix + colorify(text)} </p>);
       checkOverflow();
       highlightChat();
     };
 
-    proxy.addMessage = (name, text) => proxy.addString(text, `<b>${name}: </b>`);
+    proxy.addMessage = (name, text) => proxy.addString(text, <b>${name}: </b>);
     proxy.chatLoaded();
   });
 
@@ -115,6 +130,8 @@ function Chat() {
 
   const chatboxClasses = () => `chatbox ${active ? "active" : ""}`
 
+  const msgListClasses = () => `msglist ${overflowed ? "overflowed" : ""}`
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
   }
@@ -122,8 +139,10 @@ function Chat() {
   return (
     <div className="content">
       <Chatbox className={chatboxClasses()}>
-        <MessageList className="msglist">
-          <div className="messages" ref={messagesRef}></div>
+        <MessageList className={msgListClasses()} ref={msgListRef}>
+          <div className="messages" ref={messagesRef}>
+            {messages}
+          </div>
         </MessageList>
         <MessageInput className="msginput" style={msgInputStyle}>
           <form id="message" onSubmit={handleSubmit}>
@@ -133,6 +152,7 @@ function Chat() {
               value={inputValue}
               onKeyDown={handleKeyDown}
               onChange={handleInputChange}
+              ref={msgInputRef}
             />
           </form>
         </MessageInput>

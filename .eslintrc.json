@@ -2,6 +2,7 @@
   "extends": "next/core-web-vitals",
   "ignorePatterns": [
     "babel.config.js",
-    "next.config.js"
+    "next.config.js",
+    "dist"
   ]
 }

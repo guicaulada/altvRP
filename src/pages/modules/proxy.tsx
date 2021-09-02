@@ -6,7 +6,7 @@ const logger = getLogger("altvrp:public:proxy", "DEBUG");
 type Handler = (...args: any[]) => any;
 type Proxy<T> = Map<string, T> & { [key: string]: T };
 
-const setupMock = () => {
+const getAlt = () => {
   if (!window.alt) {
     window.alt = {
       on: () => true,
@@ -14,6 +14,7 @@ const setupMock = () => {
       emit: () => true,
     };
   }
+  return window.alt
 };
 
 const getProxyCallbackId = (event: string) =>
@@ -21,7 +22,7 @@ const getProxyCallbackId = (event: string) =>
 
 const proxy = new Proxy(new Map<string, Handler>(), {
   get: (prxy, event: string) => {
-    setupMock();
+    const alt = getAlt();
     if (prxy.has(event)) return prxy.get(event);
     return (...args: any[]) => {
       return new Promise((resolve) => {
@@ -38,7 +39,7 @@ const proxy = new Proxy(new Map<string, Handler>(), {
     };
   },
   set: (prxy, event: string, handler: Handler) => {
-    setupMock();
+    const alt = getAlt();
     if (prxy.has(event)) alt.off(event, prxy.get(event)!);
     prxy.set(event, handler);
     alt.on(event, async (...args) => {

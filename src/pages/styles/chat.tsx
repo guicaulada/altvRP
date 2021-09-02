@@ -1,7 +1,6 @@
-import Box from "@material-ui/core/Box";
 import styled from "styled-components";
 
-export const Chatbox = styled(Box)`
+export const Chatbox = styled.div`
   position: absolute;
   top: 5px;
   left: 5px;
@@ -67,7 +66,7 @@ export const Chatbox = styled(Box)`
   }
 `;
 
-export const MessageList = styled(Box)`
+export const MessageList = styled.div`
   overflow-y: hidden;
   height: 100%;
   & .overflowed {
@@ -86,7 +85,7 @@ export const MessageList = styled(Box)`
   }
 `;
 
-export const MessageInput = styled(Box)`
+export const MessageInput = styled.div`
   display: none;
   width: 100%;
 

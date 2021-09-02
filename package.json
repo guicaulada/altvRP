@@ -6,11 +6,11 @@
     "start": "cd ../.. && altv-server.exe",
     "start:dev": "yarn build && yarn start",
     "build": "npx del -f dist && npx babel src --out-dir dist --extensions .ts && npx next build",
-    "watch": "npx del -f dist && npx babel --watch src --out-dir dist --extensions .ts --copy-files"
+    "watch": "npx del -f dist && npx babel --watch src --out-dir dist --extensions .ts "
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sighmir/altv-proxy.git"
+    "url": "git+https://github.com/Sighmir/altvrp.git"
   },
   "keywords": [
     "sighmir",
@@ -26,10 +26,11 @@
   ],
   "author": "Sighmir",
   "license": "MIT",
+  "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/Sighmir/altv-proxy/issues"
+    "url": "https://github.com/Sighmir/altvrp/issues"
   },
-  "homepage": "https://github.com/Sighmir/altv-proxy#readme",
+  "homepage": "https://github.com/Sighmir/altvrp#readme",
   "devDependencies": {
     "@altv/types-client": "^1.7.7",
     "@altv/types-natives": "^1.4.2",
@@ -38,6 +39,8 @@
     "@altv/types-webview": "^1.0.2",
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-private-methods": "^7.14.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
     "@types/express": "^4.17.13",
     "@types/node": "^16.7.5",
