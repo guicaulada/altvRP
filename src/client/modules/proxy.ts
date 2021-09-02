@@ -65,7 +65,7 @@ export const webview = (view: alt.WebView) => {
       };
     },
     set: (proxy, event: string, handler: Handler) => {
-      if (event === "view") {
+      if (event === "webview") {
         throw TypeError("You can't redefine the view on the webview proxy!");
       }
       if (proxy.has(event)) view.off(event, proxy.get(event)!);
