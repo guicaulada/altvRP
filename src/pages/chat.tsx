@@ -1,8 +1,7 @@
 import React, { CSSProperties } from 'react';
-import colorify from '../../modules/colorify';
-import proxy from '../../modules/proxy';
-import { Chatbox, MessageInput, MessageList } from './style';
-import './style.ts';
+import colorify from '../view/modules/colorify';
+import proxy from '../view/modules/proxy';
+import { Chatbox, MessageInput, MessageList } from '../view/styles/chat';
 
 function Chat() {
   const buffer = [] as string[];
@@ -52,39 +51,38 @@ function Chat() {
     );
   };
 
-  proxy.openChat = () => {
-    clearTimeout(timeout);
-    if (!chatOpened) {
-      setActive(true);
-      setMsgInputStyle({display: 'block', opacity: 1})
-      msgInputRef.current!.focus();
-      chatOpened = true;
-    }
-  };
+  React.useEffect(() => {    
+    proxy.openChat = () => {
+      clearTimeout(timeout);
+      if (!chatOpened) {
+        setActive(true);
+        setMsgInputStyle({display: 'block', opacity: 1})
+        // msgInputRef.current!.focus();
+        chatOpened = true;
+      }
+    };
 
-  proxy.closeChat = () => {
-    if (chatOpened) {
-      setActive(false);
-      msgInputRef.current!.blur();
-      setMsgInputStyle({display: 'none'})
-      chatOpened = false;
-    }
-  };
+    proxy.closeChat = () => {
+      if (chatOpened) {
+        setActive(false);
+        // msgInputRef.current!.blur();
+        setMsgInputStyle({display: 'none'})
+        chatOpened = false;
+      }
+    };
 
-  proxy.addString = (text: string, prefix: string = "") => {
-    if (messagesRef.current!.children.length > 100) {
-      messagesRef.current!.removeChild(messagesRef.current!.children[0]);
-    }
-    const msg = document.createElement("p");
-    msg.innerHTML = prefix + colorify(text);
-    messagesRef.current!.appendChild(msg);
-    checkOverflow();
-    highlightChat();
-  };
+    proxy.addString = (text: string, prefix: string = "") => {
+      if (messagesRef.current!.children.length > 100) {
+        messagesRef.current!.removeChild(messagesRef.current!.children[0]);
+      }
+      const msg = document.createElement("p");
+      msg.innerHTML = prefix + colorify(text);
+      messagesRef.current!.appendChild(msg);
+      checkOverflow();
+      highlightChat();
+    };
 
-  proxy.addMessage = (name, text) => proxy.addString(text, `<b>${name}: </b>`);
-
-  React.useEffect(() => {
+    proxy.addMessage = (name, text) => proxy.addString(text, `<b>${name}: </b>`);
     proxy.chatLoaded();
   });
 
@@ -124,7 +122,7 @@ function Chat() {
   return (
     <div className="content">
       <Chatbox className={chatboxClasses()}>
-        <MessageList className="msglist" ref={msgListRef}>
+        <MessageList className="msglist">
           <div className="messages" ref={messagesRef}></div>
         </MessageList>
         <MessageInput className="msginput" style={msgInputStyle}>
