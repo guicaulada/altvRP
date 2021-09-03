@@ -2,6 +2,10 @@
 
 [alt:V](https://altv.mp/) RP framework
 
+Currently under development.
+
+Technologies being used: TypeScript, Babel, Webpack, Next.js, React and Node.js.
+
 ## Installation
 
 1. Download the project
