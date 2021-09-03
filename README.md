@@ -6,6 +6,8 @@ Currently under development.
 
 Technologies being used: TypeScript, Babel, Webpack, Next.js, React and Node.js.
 
+I really don't recommend using this at the current state, there are no configuration files or documentation.
+
 ## Installation
 
 1. Download the project
