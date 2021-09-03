@@ -1,12 +1,11 @@
-// server.js
 import { createServer } from "http";
 import next from "next";
 import path from "path";
 import { parse } from "url";
-import { getLogger } from "../../shared/modules/logger";
+import { getLogger } from "../../server/modules/logger";
 
 const dir = path.resolve(".", "resources", "altvrp");
-const app = next({ dir });
+const app = next({ dir, customServer: true });
 
 const handle = app.getRequestHandler();
 const logger = getLogger("altvrp:api");

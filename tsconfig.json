@@ -6,8 +6,7 @@
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@altv",
-      "next-env.d.ts",
-      "alt-env.d.ts"
+      "next-env.d.ts"
     ],
     "module": "ESNext",
     "target": "ESNext",

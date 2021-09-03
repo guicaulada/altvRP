@@ -1,7 +1,7 @@
 /// <reference types="@altv/types-webview" />
 import { getLogger } from "./logger";
 
-const logger = getLogger("altvrp:public:proxy", "DEBUG");
+const logger = getLogger("altvrp:web:proxy", "DEBUG");
 
 type Handler = (...args: any[]) => any;
 type Proxy<T> = Map<string, T> & { [key: string]: T };

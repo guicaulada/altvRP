@@ -1,3 +1,5 @@
+import * as alt from "alt-server";
+
 interface Logger {
   debug: (...text: any[]) => void;
   info: (...text: any[]) => void;
@@ -18,7 +20,7 @@ const getLevel = (type: Level) => levels[type];
 
 const log = (logger: string, text: any[], type: Level, level: Level) => {
   if (getLevel(type) <= getLevel(level)) {
-    console.log(`${logger} ${type}`, ...text);
+    alt.log(`${logger} ${type}`, ...text);
   }
 };
 

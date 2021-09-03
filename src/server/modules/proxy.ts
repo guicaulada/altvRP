@@ -1,5 +1,5 @@
 import * as alt from "alt-server";
-import { getLogger } from "../../shared/modules/logger";
+import { getLogger } from "../../server/modules/logger";
 
 type Handler = (...args: any[]) => any;
 type Proxy<T> = Map<string, T> & { [key: string]: T };

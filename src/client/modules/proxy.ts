@@ -1,5 +1,5 @@
 import * as alt from "alt-client";
-import { getLogger } from "../../shared/modules/logger";
+import { getLogger } from "./logger";
 
 export type Handler = (...args: any[]) => any;
 export type Proxy = Map<string, Handler> & { [key: string]: Handler };

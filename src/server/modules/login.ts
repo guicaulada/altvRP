@@ -1,5 +1,5 @@
 import * as alt from "alt-server";
-import { getLogger } from "../../shared/modules/logger";
+import { getLogger } from "../../server/modules/logger";
 import { encrypt } from "./crypto";
 import * as proxy from "./proxy";
 

@@ -1,8 +1,7 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { decrypt } from "../../server/modules/crypto";
+import { getLogger } from "../../server/modules/logger";
 import * as proxy from "../../server/modules/proxy";
-import { getLogger } from "../../shared/modules/logger";
 import { getToken, getUser } from "./helpers/discord";
 import { authPlayer } from "./helpers/player";
 
@@ -16,7 +15,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const token = await getToken(req.query.code as string);
       const user = await getUser(token.access_token);
       console.log(user);
-      console.log(state);
       proxy.client.closeLogin(player);
       player.spawn(-695.1956176757812, 83.94725036621094, 55.85205078125);
       player.model = "a_c_chimp";
@@ -24,7 +22,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       proxy.client.loadChat(player);
       return res.status(200).send("OK");
     }
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
   logger.error(
     `Invalid authorization request received from ${req.socket.remoteAddress}`
   );

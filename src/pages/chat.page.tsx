@@ -11,21 +11,14 @@ function Chat() {
   const [inputValue, setInputValue] = React.useState<string>("");
   const [msgInputStyle, setMsgInputStyle] = React.useState<CSSProperties>({});
   const [messages, setMessages] = React.useState<ReactElement[]>([])
+  const [timeout, setTimeoutId] = React.useState<ReturnType<typeof setTimeout>>()
+  const [currentBufferIndex, setCurrentBufferIndex] = React.useState<number>(-1);
   const msgInputRef = React.createRef<HTMLInputElement>();
   const msgListRef = React.createRef<HTMLDivElement>();
   const messagesRef = React.createRef<HTMLDivElement>();
 
-  let timeout: ReturnType<typeof setTimeout>;
-  let currentBufferIndex = -1;
-
-  const checkOverflow = () => {
-    if (messagesRef.current!.clientHeight > msgListRef.current!.clientHeight) {
-      if (!overflowed) {
-        setOverflowed(true)
-      }
-    } else if (overflowed) {
-        setOverflowed(false)
-    }
+  const loadBuffer = (idx: number) => {
+    setInputValue(buffer[idx])
   };
 
   const saveBuffer = () => {
@@ -33,14 +26,20 @@ function Chat() {
       buffer.pop();
     }
     buffer.unshift(inputValue);
-    currentBufferIndex = -1;
+    setCurrentBufferIndex(-1);
   };
 
-  const loadBuffer = (idx: number) => {
-    setInputValue(buffer[idx])
-  };
+  const checkOverflow = React.useCallback(() => {
+    if (messagesRef.current!.clientHeight > msgListRef.current!.clientHeight) {
+      if (!overflowed) {
+        setOverflowed(true)
+      }
+    } else if (overflowed) {
+        setOverflowed(false)
+    }
+  }, [messagesRef, msgListRef, overflowed]);
 
-  const highlightChat = () => {
+  const highlightChat = React.useCallback(() => {
     msgListRef.current!.scrollTo({
       left: 0,
       top: msgListRef.current!.scrollHeight,
@@ -48,27 +47,13 @@ function Chat() {
     });
     setActive(true);
     clearTimeout(timeout);
-    timeout = setTimeout(
+    setTimeoutId(setTimeout(
       () => setActive(false),
       4000
-    );
-  };
+    ));
+  }, [msgListRef, timeout]);
 
-  const addMessage = (msg: ReactElement) => {
-    setMessages((messages) => {
-      messages.push(msg)
-      return messages
-    })
-  }
-
-  const removeOldestMessage = () => {
-    setMessages((messages) => {
-      messages.shift()
-      return messages
-    })
-  }
-
-  React.useEffect(() => {    
+  React.useEffect(() => {
     proxy.openChat = () => {
       clearTimeout(timeout);
       if (!chatOpened) {
@@ -98,8 +83,25 @@ function Chat() {
     };
 
     proxy.addMessage = (name, text) => proxy.addString(text, <b>${name}: </b>);
+  }, [chatOpened, checkOverflow, highlightChat, messages.length, msgInputRef, timeout]);
+
+  React.useEffect(() => {
     proxy.chatLoaded();
-  });
+  }, [])
+
+  const addMessage = (msg: ReactElement) => {
+    setMessages((messages) => {
+      messages.push(msg)
+      return messages
+    })
+  }
+
+  const removeOldestMessage = () => {
+    setMessages((messages) => {
+      messages.shift()
+      return messages
+    })
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,15 +117,21 @@ function Chat() {
     } else if (e.code === "ArrowDown") {
       e.preventDefault();
       if (currentBufferIndex > 0) {
-        loadBuffer(--currentBufferIndex);
-      } else if (currentBufferIndex === 0) {
-        currentBufferIndex = -1;
+        setCurrentBufferIndex((currentBufferIndex) => {
+          loadBuffer(--currentBufferIndex);
+          return currentBufferIndex
+        })
+      } else if (currentBufferIndex == 0) {
+        setCurrentBufferIndex(-1);
         setInputValue("")
       }
     } else if (e.code === "ArrowUp") {
       e.preventDefault();
       if (currentBufferIndex < buffer.length - 1) {
-        loadBuffer(++currentBufferIndex);
+        setCurrentBufferIndex((currentBufferIndex) => {
+          loadBuffer(++currentBufferIndex);
+          return currentBufferIndex
+        })
       }
     }
   }

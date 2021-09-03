@@ -19,7 +19,7 @@ export const getToken = async (code: string) => {
       client_secret: process.env.ALTV_APP_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: "http://sighmir.io:7789/authorize",
+      redirect_uri: "http://sighmir.io:7789/api/authorize",
     })
   );
   return response.data;
