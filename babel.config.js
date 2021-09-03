@@ -2,6 +2,8 @@ module.exports = {
   overrides: [{
     test: [
       './src/client',
+      './src/plugins/**/client/**/*.ts',
+      './src/plugins/**/client.ts',
     ],
     presets: [
       "@babel/preset-typescript",
@@ -12,6 +14,8 @@ module.exports = {
   }, {
     test: [
       './src/server',
+      './src/plugins/**/server/**/*.ts',
+      './src/plugins/**/server.ts',
     ],
     presets: [
       "@babel/preset-typescript",

@@ -1,5 +1,5 @@
 import * as alt from "alt-client";
-import * as proxy from "./proxy";
+import { proxy } from "../../client";
 
 let view: proxy.WebProxy;
 

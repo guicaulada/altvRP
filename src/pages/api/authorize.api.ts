@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const user = await getUser(token.access_token);
       console.log(user);
       proxy.client.closeLogin(player);
-      player.spawn(-695.1956176757812, 83.94725036621094, 55.85205078125);
+      player.spawn(1850.914306640625, -229.46372985839844, 293.2996826171875);
       player.model = "a_c_chimp";
       player.giveWeapon(0xaf113f99, 1000000, true);
       proxy.client.loadChat(player);

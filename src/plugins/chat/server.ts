@@ -1,14 +1,12 @@
 import * as alt from "alt-server";
-import { getLogger } from "../../server/modules/logger";
-import * as proxy from "../modules/proxy";
-import * as cmds from "./commands";
+import { getLogger, proxy } from "../../server";
 
 const chatLogger = getLogger("altvrp:chat:message");
 const cmdLogger = getLogger("altvrp:chat:command");
 const mutedPlayers = new Map<number, boolean>();
 
 const invokeCmd = (player: alt.Player, cmd: string, args: string[]) => {
-  const handler = Reflect.get(cmds, cmd);
+  const handler = proxy.cmd[cmd];
   if (handler) {
     handler(player, ...args);
   } else {

@@ -2,7 +2,7 @@ import { createServer } from "http";
 import next from "next";
 import path from "path";
 import { parse } from "url";
-import { getLogger } from "../../server/modules/logger";
+import { getLogger } from "./logger";
 
 const dir = path.resolve(".", "resources", "altvrp");
 const app = next({ dir, customServer: true });
@@ -18,3 +18,5 @@ app.prepare().then(() => {
     logger.info("Next.js server ready on 0.0.0.0:7789");
   });
 });
+
+export default app

@@ -1,5 +1,5 @@
 import * as alt from "alt-client";
-import * as proxy from "../modules/proxy";
+import { proxy } from "../../client";
 
 interface Message {
   name: string | null;
@@ -60,5 +60,5 @@ proxy.client.loadChat = () => {
     }
   };
 
-  proxy.client.chatMessage(null, "<b>alt:V Multiplayer has started</b>");
+  proxy.client.chatMessage(null, "alt:V Multiplayer has started");
 };

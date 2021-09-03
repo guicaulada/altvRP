@@ -1,6 +1,6 @@
 import * as alt from "alt-client";
 import * as game from "natives";
-import * as proxy from "./proxy";
+import { proxy } from "../../client";
 
 proxy.client.setPlayerIntoVehicle = (veh: alt.Vehicle, seat: number = -1) => {
   let cleared = false;

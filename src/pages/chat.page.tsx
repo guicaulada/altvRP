@@ -1,114 +1,100 @@
-import React, { CSSProperties, ReactElement } from 'react';
+import React from 'react';
 import colorify from './modules/colorify';
 import proxy from './modules/proxy';
 import { Chatbox, MessageInput, MessageList } from './styles/chat';
 
 function Chat() {
   const buffer = [] as string[];
-  const [active, setActive] = React.useState<boolean>(false);
-  const [overflowed, setOverflowed] = React.useState<boolean>(false);
-  const [chatOpened, setChatOpened] = React.useState<boolean>(false);
-  const [inputValue, setInputValue] = React.useState<string>("");
-  const [msgInputStyle, setMsgInputStyle] = React.useState<CSSProperties>({});
-  const [messages, setMessages] = React.useState<ReactElement[]>([])
-  const [timeout, setTimeoutId] = React.useState<ReturnType<typeof setTimeout>>()
-  const [currentBufferIndex, setCurrentBufferIndex] = React.useState<number>(-1);
-  const msgInputRef = React.createRef<HTMLInputElement>();
-  const msgListRef = React.createRef<HTMLDivElement>();
+  const chatboxRef = React.createRef<HTMLDivElement>();
   const messagesRef = React.createRef<HTMLDivElement>();
+  const msgListRef = React.createRef<HTMLDivElement>();
+  const msgInputDivRef = React.createRef<HTMLDivElement>();
+  const msgInputRef = React.createRef<HTMLInputElement>();
 
-  const loadBuffer = (idx: number) => {
-    setInputValue(buffer[idx])
+  let timeout: ReturnType<typeof setTimeout>;
+  let currentBufferIndex = -1;
+
+  const checkOverflow = () => {
+    if (messagesRef.current!.clientHeight > msgListRef.current!.clientHeight) {
+      if (!msgListRef.current!.classList.contains("overflowed")) {
+        msgListRef.current!.classList.add("overflowed");
+      }
+    } else if (msgListRef.current!.classList.contains("overflowed")) {
+      msgListRef.current!.classList.remove("overflowed");
+    }
   };
 
   const saveBuffer = () => {
     if (buffer.length > 100) {
       buffer.pop();
     }
-    buffer.unshift(inputValue);
-    setCurrentBufferIndex(-1);
+    buffer.unshift(msgInputRef.current!.value);
+    currentBufferIndex = -1;
   };
 
-  const checkOverflow = React.useCallback(() => {
-    if (messagesRef.current!.clientHeight > msgListRef.current!.clientHeight) {
-      if (!overflowed) {
-        setOverflowed(true)
-      }
-    } else if (overflowed) {
-        setOverflowed(false)
-    }
-  }, [messagesRef, msgListRef, overflowed]);
+  const loadBuffer = (idx: number) => {
+    msgInputRef.current!.value = buffer[idx];
+  };
 
-  const highlightChat = React.useCallback(() => {
+  const highlightChat = () => {
     msgListRef.current!.scrollTo({
       left: 0,
       top: msgListRef.current!.scrollHeight,
       behavior: "smooth",
     });
-    setActive(true);
+    chatboxRef.current!.classList.add("active");
     clearTimeout(timeout);
-    setTimeoutId(setTimeout(
-      () => setActive(false),
+    timeout = setTimeout(
+      () => chatboxRef.current!.classList.remove("active"),
       4000
-    ));
-  }, [msgListRef, timeout]);
+    );
+  };
 
   React.useEffect(() => {
+    let chatOpened = false;
+    
     proxy.openChat = () => {
       clearTimeout(timeout);
       if (!chatOpened) {
-        setActive(true);
-        setMsgInputStyle({display: 'block', opacity: 1})
+        chatboxRef.current!.classList.add("active");
+        msgInputDivRef.current!.style.display = "block";
+        msgInputDivRef.current!.style.opacity = "1";
         msgInputRef.current!.focus();
-        setChatOpened(true);
+        chatOpened = true;
       }
     };
 
     proxy.closeChat = () => {
       if (chatOpened) {
-        setActive(false);
+        chatboxRef.current!.classList.remove("active");
         msgInputRef.current!.blur();
-        setMsgInputStyle({display: 'none'})
-        setChatOpened(false);
+        msgInputDivRef.current!.style.display = "none";
+        chatOpened = false;
       }
     };
 
     proxy.addString = (text: string, prefix: string = "") => {
-      if (messages.length > 100) {
-        removeOldestMessage()
+      if (messagesRef.current!.children.length > 100) {
+        messagesRef.current!.removeChild(messagesRef.current!.children[0]);
       }
-      addMessage(<p> {prefix + colorify(text)} </p>);
+      const msg = document.createElement("p");
+      msg.innerHTML = prefix + colorify(text);
+      messagesRef.current!.appendChild(msg);
       checkOverflow();
       highlightChat();
     };
 
-    proxy.addMessage = (name, text) => proxy.addString(text, <b>${name}: </b>);
-  }, [chatOpened, checkOverflow, highlightChat, messages.length, msgInputRef, timeout]);
-
-  React.useEffect(() => {
+    proxy.addMessage = (name, text) => proxy.addString(text, `<b>${name}: </b>`);
     proxy.chatLoaded();
-  }, [])
-
-  const addMessage = (msg: ReactElement) => {
-    setMessages((messages) => {
-      messages.push(msg)
-      return messages
-    })
-  }
-
-  const removeOldestMessage = () => {
-    setMessages((messages) => {
-      messages.shift()
-      return messages
-    })
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    proxy.chatMessage(inputValue);
+    proxy.chatMessage(msgInputRef.current!.value);
     saveBuffer();
     proxy.closeChat();
-    setInputValue("")
+    msgInputRef.current!.value = "";
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -117,51 +103,28 @@ function Chat() {
     } else if (e.code === "ArrowDown") {
       e.preventDefault();
       if (currentBufferIndex > 0) {
-        setCurrentBufferIndex((currentBufferIndex) => {
-          loadBuffer(--currentBufferIndex);
-          return currentBufferIndex
-        })
-      } else if (currentBufferIndex == 0) {
-        setCurrentBufferIndex(-1);
-        setInputValue("")
+        loadBuffer(--currentBufferIndex);
+      } else if (currentBufferIndex === 0) {
+        currentBufferIndex = -1;
+        msgInputRef.current!.value = "";
       }
     } else if (e.code === "ArrowUp") {
       e.preventDefault();
       if (currentBufferIndex < buffer.length - 1) {
-        setCurrentBufferIndex((currentBufferIndex) => {
-          loadBuffer(++currentBufferIndex);
-          return currentBufferIndex
-        })
+        loadBuffer(++currentBufferIndex);
       }
     }
   }
 
-  const chatboxClasses = () => `chatbox ${active ? "active" : ""}`
-
-  const msgListClasses = () => `msglist ${overflowed ? "overflowed" : ""}`
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
-  }
-
   return (
     <div className="content">
-      <Chatbox className={chatboxClasses()}>
-        <MessageList className={msgListClasses()} ref={msgListRef}>
-          <div className="messages" ref={messagesRef}>
-            {messages}
-          </div>
+      <Chatbox className="chatbox" ref={chatboxRef}>
+        <MessageList className="msglist" ref={msgListRef}>
+          <div className="messages" ref={messagesRef}></div>
         </MessageList>
-        <MessageInput className="msginput" style={msgInputStyle}>
+        <MessageInput className="msginput" ref={msgInputDivRef}>
           <form id="message" onSubmit={handleSubmit}>
-            <input 
-              type="text"
-              spellCheck="false"
-              value={inputValue}
-              onKeyDown={handleKeyDown}
-              onChange={handleInputChange}
-              ref={msgInputRef}
-            />
+            <input type="text" spellCheck="false" onKeyDown={handleKeyDown} ref={msgInputRef} />
           </form>
         </MessageInput>
       </Chatbox>
