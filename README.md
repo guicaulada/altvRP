@@ -1,6 +1,6 @@
 # alt:vRP
 
-[alt:V](https://altv.mp/) RP framework
+[alt:V](https://altv.mp/) RP framework inspired by [ImagicTheCat/vRP](https://github.com/ImagicTheCat/vRP).
 
 Currently under development.
 
