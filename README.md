@@ -13,8 +13,9 @@ I really don't recommend using this at the current state, there are no configura
 1. Download the project
 2. Unzip the files on the folder `altvrp` inside your server `resources` folder
 3. Add the resource `altvrp` to your `server.cfg`
-4. The game mode needs to be built with `yarn build`  
-    4.1. You can also use `yarn start:dev` inside the `altvrp` folder to build and start the server
+4. Open a console on the project folder and run `yarn` to install dependencies  
+    4.1. The resource needs to be built with `yarn build`  
+    4.2. You can also use `yarn start:dev` to build and start the server
 
 ## License
 ```
