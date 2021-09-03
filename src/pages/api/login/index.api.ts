@@ -1,7 +1,5 @@
+import { crypto, getLogger, proxy } from "@server";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { decrypt } from "../../server/modules/crypto";
-import { getLogger } from "../../server/modules/logger";
-import * as proxy from "../../server/modules/proxy";
 import { getToken, getUser } from "./helpers/discord";
 import { authPlayer } from "./helpers/player";
 
@@ -9,7 +7,7 @@ const logger = getLogger("altvrp:api:authorize");
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const state = JSON.parse(decrypt(req.query.state as string));
+    const state = JSON.parse(crypto.decrypt(req.query.state as string));
     const player = authPlayer(state);
     if (state && player) {
       const token = await getToken(req.query.code as string);

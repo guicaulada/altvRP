@@ -1,3 +1,4 @@
+import { config } from "@server";
 import axios from "axios";
 
 export interface DiscordToken {
@@ -15,11 +16,11 @@ export const getToken = async (code: string) => {
   const response = await axios.post<DiscordToken>(
     "https://discord.com/api/v8/oauth2/token",
     formUrlEncoded({
-      client_id: process.env.ALTV_APP_CLIENT,
-      client_secret: process.env.ALTV_APP_SECRET,
+      client_id: config.DISCORD_CLIENT,
+      client_secret: config.DISCORD_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: "http://sighmir.io:7789/api/authorize",
+      redirect_uri: `http://${config.WEBSERVER_ADDRESS}/api/login`,
     })
   );
   return response.data;

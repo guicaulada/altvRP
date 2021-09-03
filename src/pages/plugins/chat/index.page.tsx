@@ -1,7 +1,7 @@
 import React from 'react';
-import colorify from './modules/colorify';
-import proxy from './modules/proxy';
-import { Chatbox, MessageInput, MessageList } from './styles/chat';
+import colorify from '../../modules/colorify';
+import * as proxy from '../../modules/proxy';
+import { Chatbox, MessageInput, MessageList } from './styles';
 
 function Chat() {
   const buffer = [] as string[];
@@ -53,7 +53,7 @@ function Chat() {
   React.useEffect(() => {
     let chatOpened = false;
     
-    proxy.openChat = () => {
+    proxy.client.openChat = () => {
       clearTimeout(timeout);
       if (!chatOpened) {
         chatboxRef.current!.classList.add("active");
@@ -64,7 +64,7 @@ function Chat() {
       }
     };
 
-    proxy.closeChat = () => {
+    proxy.client.closeChat = () => {
       if (chatOpened) {
         chatboxRef.current!.classList.remove("active");
         msgInputRef.current!.blur();
@@ -73,7 +73,7 @@ function Chat() {
       }
     };
 
-    proxy.addString = (text: string, prefix: string = "") => {
+    proxy.client.addString = (text: string, prefix: string = "") => {
       if (messagesRef.current!.children.length > 100) {
         messagesRef.current!.removeChild(messagesRef.current!.children[0]);
       }
@@ -84,16 +84,16 @@ function Chat() {
       highlightChat();
     };
 
-    proxy.addMessage = (name, text) => proxy.addString(text, `<b>${name}: </b>`);
-    proxy.chatLoaded();
+    proxy.client.addMessage = (name, text) => proxy.client.addString(text, `<b>${name}: </b>`);
+    proxy.client.chatLoaded();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    proxy.chatMessage(msgInputRef.current!.value);
+    proxy.client.chatMessage(msgInputRef.current!.value);
     saveBuffer();
-    proxy.closeChat();
+    proxy.client.closeChat();
     msgInputRef.current!.value = "";
   }
 

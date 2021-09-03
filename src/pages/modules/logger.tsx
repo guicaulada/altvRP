@@ -1,3 +1,5 @@
+import * as config from "../config";
+
 interface Logger {
   debug: (...text: any[]) => void;
   info: (...text: any[]) => void;
@@ -22,7 +24,7 @@ const log = (logger: string, text: any[], type: Level, level: Level) => {
   }
 };
 
-export const getLogger = (name: string, level: Level = "INFO"): Logger => {
+export const getLogger = (name: string, level: Level = config.DEFAULT_LOG_LEVEL): Logger => {
   return {
     debug: (...text: any[]) => log(name, text, "DEBUG", level),
     info: (...text: any[]) => log(name, text, "INFO", level),

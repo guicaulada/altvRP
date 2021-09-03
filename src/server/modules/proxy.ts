@@ -1,10 +1,10 @@
 import * as alt from "alt-server";
 import { getLogger } from "./logger";
 
-type Handler = (...args: any[]) => any;
-type Proxy<T> = Map<string, T> & { [key: string]: T };
+export type Handler = (...args: any[]) => any;
+export type Proxy<T> = Map<string, T> & { [key: string]: T };
 
-const logger = getLogger("altvrp:proxy", "DEBUG");
+const logger = getLogger("altvrp:proxy");
 
 const getProxyCallbackId = (event: string) =>
   `${event}:${Math.round(new Date().getTime())}`;
@@ -13,7 +13,7 @@ const isPlayer = (p: alt.Player | alt.Player[]) =>
   p instanceof alt.Player ||
   (p instanceof Array && p.every((i) => i instanceof alt.Player));
 
-export const cmd = new Proxy(new Map<string, Handler>(), {
+export const local = new Proxy(new Map<string, Handler>(), {
   get: (proxy, command: string) => {
     return proxy.get(command);
   },

@@ -1,7 +1,10 @@
 import crypto from "crypto";
+import * as config from "../config";
 
 const algorithm = "AES-256-GCM";
-const secretKey = Buffer.alloc(32).fill(process.pid.toString());
+const secretKey = Buffer.alloc(32).fill(
+  process.pid.toString() + config.CRYPTO_SECRET
+);
 
 export const encrypt = (message: string) => {
   const iv = crypto.randomBytes(16);

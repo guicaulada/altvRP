@@ -1,5 +1,5 @@
+import { config, proxy } from "@client";
 import * as alt from "alt-client";
-import { proxy } from "../../client";
 
 interface Message {
   name: string | null;
@@ -12,7 +12,9 @@ let loaded = false;
 let opened = false;
 
 proxy.client.loadChat = () => {
-  const view = proxy.webview(new alt.WebView("http://sighmir.io:7789/chat"));
+  const view = proxy.webview(
+    new alt.WebView(`http://${config.WEBSERVER_ADDRESS}/plugins/chat`)
+  );
 
   const addMessage = (name: string | null, text: string) => {
     if (name) {

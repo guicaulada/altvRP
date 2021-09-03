@@ -1,17 +1,22 @@
+import { getLogger, proxy } from "@server";
 import * as alt from "alt-server";
-import { getLogger, proxy } from "../../server";
 
 const chatLogger = getLogger("altvrp:chat:message");
 const cmdLogger = getLogger("altvrp:chat:command");
 const mutedPlayers = new Map<number, boolean>();
+const commands = new Map<string, proxy.Handler>();
 
 const invokeCmd = (player: alt.Player, cmd: string, args: string[]) => {
-  const handler = proxy.cmd[cmd];
+  const handler = commands.get(cmd);
   if (handler) {
     handler(player, ...args);
   } else {
     send(player, `{FF0000} Unknown command /${cmd}`);
   }
+};
+
+proxy.local.registerCommand = (cmd: string, handler: proxy.Handler) => {
+  commands.set(cmd, handler);
 };
 
 proxy.server.chatMessage = (player, msg) => {

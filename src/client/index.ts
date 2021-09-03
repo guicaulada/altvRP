@@ -1,5 +1,6 @@
+import * as config from "./config";
 import { getLogger } from "./modules/logger";
 import plugins from "./modules/plugins";
 import * as proxy from "./modules/proxy";
 
-export { proxy, getLogger, plugins };
+export { proxy, plugins, config, getLogger };

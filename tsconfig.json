@@ -8,10 +8,21 @@
       "./node_modules/@altv",
       "next-env.d.ts"
     ],
+    "paths": {
+      "@server": ["./server"],
+      "@client": ["./client"],
+      "@plugins": ["./plugins"],
+      "@pages": ["./pages"],
+      "@server/*": ["./server/*"],
+      "@client/*": ["./client/*"],
+      "@plugins/*": ["./plugins/*"],
+      "@pages/*": ["./pages/*"]
+    },
     "module": "ESNext",
     "target": "ESNext",
     "outDir": "./dist",
     "rootDir": "./src",
+    "baseUrl": "./src",
     "moduleResolution": "node",
     "removeComments": true,
     "noUnusedLocals": true,

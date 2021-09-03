@@ -1,3 +1,4 @@
+require('dotenv').config();
 module.exports = {
   overrides: [{
     test: [
@@ -9,7 +10,15 @@ module.exports = {
       "@babel/preset-typescript",
     ],
     plugins: [
-      ["transform-inline-environment-variables", { include: ["ALTV_APP_CLIENT"] }],
+      "transform-inline-environment-variables",
+      ["babel-plugin-module-resolver", {
+        alias: {
+          "@server": "./src/server",
+          "@client": "./src/client",
+          "@plugins": "./src/plugins",
+          "@pages": "./src/pages"
+        }
+      }]
     ]
   }, {
     test: [
@@ -21,7 +30,8 @@ module.exports = {
       "@babel/preset-typescript",
     ],
     plugins: [
-      ["@babel/plugin-transform-modules-commonjs"]
+      "transform-inline-environment-variables",
+      "@babel/plugin-transform-modules-commonjs"
     ]
   }, {
     test: [

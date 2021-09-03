@@ -1,10 +1,10 @@
 /// <reference types="@altv/types-webview" />
 import { getLogger } from "./logger";
 
-const logger = getLogger("altvrp:web:proxy", "DEBUG");
+const logger = getLogger("altvrp:web:proxy");
 
-type Handler = (...args: any[]) => any;
-type Proxy<T> = Map<string, T> & { [key: string]: T };
+export type Handler = (...args: any[]) => any;
+export type Proxy<T=Handler> = Map<string, T> & { [key: string]: T };
 
 const getAlt = () => {
   if (!window.alt) {
@@ -20,7 +20,17 @@ const getAlt = () => {
 const getProxyCallbackId = (event: string) =>
   `${event}:${Math.round(new Date().getTime())}`;
 
-const proxy = new Proxy(new Map<string, Handler>(), {
+export const local = new Proxy(new Map<string, Handler>(), {
+  get: (proxy, command: string) => {
+    return proxy.get(command);
+  },
+  set: (proxy, command: string, handler: Handler) => {
+    proxy.set(command, handler);
+    return true;
+  },
+}) as Proxy;
+
+export const client = new Proxy(new Map<string, Handler>(), {
   get: (prxy, event: string) => {
     const alt = getAlt();
     if (prxy.has(event)) return prxy.get(event);
@@ -51,6 +61,4 @@ const proxy = new Proxy(new Map<string, Handler>(), {
     });
     return true;
   },
-}) as Proxy<Handler>;
-
-export default proxy;
+}) as Proxy;

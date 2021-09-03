@@ -2,13 +2,23 @@ import * as alt from "alt-client";
 import { getLogger } from "./logger";
 
 export type Handler = (...args: any[]) => any;
-export type Proxy = Map<string, Handler> & { [key: string]: Handler };
-export type WebProxy = { webview: alt.WebView } & Proxy;
+export type Proxy<T = Handler> = Map<string, T> & { [key: string]: T };
+export type WebProxy<T = Handler> = { webview: alt.WebView } & Proxy<T>;
 
-const logger = getLogger("altvrp:proxy", "DEBUG");
+const logger = getLogger("altvrp:proxy");
 
 const getProxyCallbackId = (event: string) =>
   `${event}:${Math.round(new Date().getTime())}`;
+
+export const local = new Proxy(new Map<string, Handler>(), {
+  get: (proxy, command: string) => {
+    return proxy.get(command);
+  },
+  set: (proxy, command: string, handler: Handler) => {
+    proxy.set(command, handler);
+    return true;
+  },
+}) as Proxy;
 
 export const client = new Proxy(new Map<string, Handler>(), {
   get: (proxy, event: string) => {
