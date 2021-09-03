@@ -29,14 +29,16 @@ const clientFiles = [
 serverFiles.forEach((file) => {
   const url = fileUrl(file);
   const name = url.split("/plugins/").pop()!.split("/").shift()!;
-  logger.info(`Loading plugin ~y~${name}`);
-  try {
-    plugins[name] = import(url);
-  } catch (err) {
-    console.log(err);
-    logger.error(`~r~Failed to load plugin ${name}`);
+  if (name[0] != "_") {
+    logger.info(`Loading plugin ~y~${name}`);
+    try {
+      plugins[name] = import(url);
+    } catch (err) {
+      console.log(err);
+      logger.error(`~r~Failed to load plugin ${name}`);
+    }
+    logger.info(`Loaded plugin ~y~${name}`);
   }
-  logger.info(`Loaded plugin ~y~${name}`);
 });
 
 alt.on("playerConnect", (player) => {
