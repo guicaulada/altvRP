@@ -33,3 +33,26 @@ proxy.local.registerCommand("pos", (player: alt.Player) => {
     `${player.pos.x}, ${player.pos.y}, ${player.pos.z}`
   );
 });
+
+proxy.local.registerCommand(
+  "freemode",
+  (player: alt.Player, gender: string) => {
+    player.model = `mp_${gender}_freemode_01`;
+  }
+);
+
+proxy.local.registerCommand(
+  "tp",
+  (player: alt.Player, x: string, y: string, z: string) => {
+    player.pos = new alt.Vector3(Number(x), Number(y), Number(z));
+  }
+);
+
+proxy.local.registerCommand("noclip", (player: alt.Player) => {
+  proxy.client.toggleNoclip(player);
+});
+
+proxy.local.registerCommand("creator", (player: alt.Player) => {
+  player.spawn(-38.36043930053711, -590.017578125, 78.818359375);
+  player.model = "mp_m_freemode_01";
+});

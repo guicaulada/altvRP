@@ -6,7 +6,7 @@ import * as config from "../config";
 import { getLogger } from "./logger";
 
 const dir = path.resolve(".", "resources", "altvrp");
-const app = next({ dir });
+const app = next({ dir, customServer: true, quiet: true });
 
 const handle = app.getRequestHandler();
 const logger = getLogger("altvrp:api");

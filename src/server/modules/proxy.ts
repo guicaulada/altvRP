@@ -1,8 +1,6 @@
 import * as alt from "alt-server";
+import type { Handler, Proxy } from "types";
 import { getLogger } from "./logger";
-
-export type Handler = (...args: any[]) => any;
-export type Proxy<T> = Map<string, T> & { [key: string]: T };
 
 const logger = getLogger("altvrp:proxy");
 
@@ -21,7 +19,7 @@ export const local = new Proxy(new Map<string, Handler>(), {
     proxy.set(command, handler);
     return true;
   },
-}) as Proxy<Handler>;
+}) as Proxy;
 
 export const server = new Proxy(new Map<string, Handler>(), {
   get: (proxy, event: string) => {
@@ -39,7 +37,7 @@ export const server = new Proxy(new Map<string, Handler>(), {
     });
     return true;
   },
-}) as Proxy<Handler>;
+}) as Proxy;
 
 export const client = new Proxy(new Map<string, Handler>(), {
   get: (_proxy, event: string) => {
@@ -73,4 +71,4 @@ export const client = new Proxy(new Map<string, Handler>(), {
   set: () => {
     throw TypeError("You can't set client events on server-side.");
   },
-}) as Proxy<Handler>;
+}) as Proxy;

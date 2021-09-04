@@ -1,10 +1,6 @@
 import { config, proxy } from "@client";
 import * as alt from "alt-client";
-
-interface Message {
-  name: string | null;
-  text: string;
-}
+import type { Message } from "./types";
 
 const buffer = [] as Message[];
 

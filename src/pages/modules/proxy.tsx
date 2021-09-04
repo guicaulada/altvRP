@@ -30,10 +30,10 @@ export const local = new Proxy(new Map<string, Handler>(), {
   },
 }) as Proxy;
 
-export const client = new Proxy(new Map<string, Handler>(), {
-  get: (prxy, event: string) => {
+export const view = new Proxy(new Map<string, Handler>(), {
+  get: (proxy, event: string) => {
     const alt = getAlt();
-    if (prxy.has(event)) return prxy.get(event);
+    if (proxy.has(event)) return proxy.get(event);
     return (...args: any[]) => {
       return new Promise((resolve) => {
         const id = getProxyCallbackId(event);
@@ -48,10 +48,10 @@ export const client = new Proxy(new Map<string, Handler>(), {
       });
     };
   },
-  set: (prxy, event: string, handler: Handler) => {
+  set: (proxy, event: string, handler: Handler) => {
     const alt = getAlt();
-    if (prxy.has(event)) alt.off(event, prxy.get(event)!);
-    prxy.set(event, handler);
+    if (proxy.has(event)) alt.off(event, proxy.get(event)!);
+    proxy.set(event, handler);
     alt.on(event, async (...args) => {
       const id = args.shift();
       logger.debug(`${event} ${args} <=@=`);

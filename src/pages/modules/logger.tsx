@@ -1,13 +1,5 @@
+import type { Level, Logger } from "types";
 import * as config from "../config";
-
-interface Logger {
-  debug: (...text: any[]) => void;
-  info: (...text: any[]) => void;
-  warn: (...text: any[]) => void;
-  error: (...text: any[]) => void;
-}
-
-type Level = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
 const levels = {
   DEBUG: 4,

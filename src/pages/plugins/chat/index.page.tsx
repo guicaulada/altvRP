@@ -1,6 +1,6 @@
+import colorify from '@pages/modules/colorify';
+import * as proxy from '@pages/modules/proxy';
 import React from 'react';
-import colorify from '../../modules/colorify';
-import * as proxy from '../../modules/proxy';
 import { Chatbox, MessageInput, MessageList } from './styles';
 
 function Chat() {
@@ -53,7 +53,7 @@ function Chat() {
   React.useEffect(() => {
     let chatOpened = false;
     
-    proxy.client.openChat = () => {
+    proxy.view.openChat = () => {
       clearTimeout(timeout);
       if (!chatOpened) {
         chatboxRef.current!.classList.add("active");
@@ -64,7 +64,7 @@ function Chat() {
       }
     };
 
-    proxy.client.closeChat = () => {
+    proxy.view.closeChat = () => {
       if (chatOpened) {
         chatboxRef.current!.classList.remove("active");
         msgInputRef.current!.blur();
@@ -73,7 +73,7 @@ function Chat() {
       }
     };
 
-    proxy.client.addString = (text: string, prefix: string = "") => {
+    proxy.view.addString = (text: string, prefix: string = "") => {
       if (messagesRef.current!.children.length > 100) {
         messagesRef.current!.removeChild(messagesRef.current!.children[0]);
       }
@@ -84,16 +84,16 @@ function Chat() {
       highlightChat();
     };
 
-    proxy.client.addMessage = (name, text) => proxy.client.addString(text, `<b>${name}: </b>`);
-    proxy.client.chatLoaded();
+    proxy.view.addMessage = (name, text) => proxy.view.addString(text, `<b>${name}: </b>`);
+    proxy.view.chatLoaded();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    proxy.client.chatMessage(msgInputRef.current!.value);
+    proxy.view.chatMessage(msgInputRef.current!.value);
     saveBuffer();
-    proxy.client.closeChat();
+    proxy.view.closeChat();
     msgInputRef.current!.value = "";
   }
 

@@ -6,11 +6,13 @@
     "start": "cd ../.. && altv-server.exe",
     "start:dev": "yarn build && yarn start",
     "watch": "yarn build:clean && yarn build:watch",
-    "build": "yarn build:clean && yarn build:alt && yarn build:next",
+    "build": "yarn build:clean && yarn build:alt && yarn next:build",
     "build:clean": "npx del -f dist",
     "build:alt": "npx babel src --out-dir dist --extensions .ts",
     "build:watch": "npx babel --watch src --out-dir dist --extensions .ts",
-    "build:next": "npx next build"
+    "next:start": "npx next start",
+    "next:build": "npx next build",
+    "next:dev": "yarn next:build && yarn next:start"
   },
   "_moduleAliases": {
     "@server": "dist/server",
@@ -51,6 +53,7 @@
     "@babel/plugin-proposal-private-methods": "^7.14.5",
     "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
     "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@babel/preset-flow": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
     "@types/express": "^4.17.13",
     "@types/glob": "^7.1.4",

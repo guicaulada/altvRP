@@ -1,7 +1,8 @@
 import { proxy } from "@client";
 import * as alt from "alt-client";
+import type { WebProxy } from "types";
 
-let view: proxy.WebProxy;
+let view: WebProxy;
 
 proxy.client.loadLogin = (state: string, client: string, redirect: string) => {
   view = proxy.webview(

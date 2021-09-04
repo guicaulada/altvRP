@@ -3,10 +3,12 @@ module.exports = {
   overrides: [{
     test: [
       './src/client',
+      './src/**/*.d.ts',
       './src/plugins/**/client/**/*.ts',
       './src/plugins/**/client.ts',
     ],
     presets: [
+      "@babel/preset-flow",
       "@babel/preset-typescript",
     ],
     plugins: [
@@ -23,10 +25,12 @@ module.exports = {
   }, {
     test: [
       './src/server',
+      './src/**/*.d.ts',
       './src/plugins/**/server/**/*.ts',
       './src/plugins/**/server.ts',
     ],
     presets: [
+      "@babel/preset-flow",
       "@babel/preset-typescript",
     ],
     plugins: [
