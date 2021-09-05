@@ -1,13 +1,8 @@
-import { config, proxy } from "@client";
+import { proxy } from "@client";
 import * as alt from "alt-client";
 
-proxy.client.loadCharacterCreation = () => {
-  const view = proxy.webview(
-    new alt.WebView(
-      `http://${config.WEBSERVER_ADDRESS}/plugins/characters/creation`,
-      true
-    )
-  );
+proxy.client.loadCharacterCreation = (url: string) => {
+  const view = proxy.webview(new alt.WebView(url, true));
   alt.showCursor(true);
   view.webview.focus();
 };

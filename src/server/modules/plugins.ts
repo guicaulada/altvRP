@@ -4,6 +4,8 @@ import path from "path";
 import { getLogger } from "./logger";
 import * as proxy from "./proxy";
 
+export type Plugin = { name: string; path: string };
+
 const fileUrl = (str: string) => {
   var pathName = path.resolve(str).replace(/\\/g, "/");
   if (pathName[0] !== "/") {
@@ -48,7 +50,7 @@ alt.on("playerConnect", (player) => {
       const relativePath = file.split("/plugins/").pop()!;
       const name = relativePath.split("/").shift()!;
       return { name, path: `../../plugins/${relativePath}` };
-    })
+    }) as Plugin[]
   );
 });
 

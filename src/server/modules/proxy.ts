@@ -1,6 +1,10 @@
 import * as alt from "alt-server";
-import type { Handler, Proxy } from "types";
 import { getLogger } from "./logger";
+
+export type EventHandler = (...args: any[]) => any;
+export type EventProxy<T = EventHandler> = Map<string, T> & {
+  [key: string]: T;
+};
 
 const logger = getLogger("altvrp:proxy");
 
@@ -11,21 +15,21 @@ const isPlayer = (p: alt.Player | alt.Player[]) =>
   p instanceof alt.Player ||
   (p instanceof Array && p.every((i) => i instanceof alt.Player));
 
-export const local = new Proxy(new Map<string, Handler>(), {
+export const local = new Proxy(new Map<string, EventHandler>(), {
   get: (proxy, command: string) => {
     return proxy.get(command);
   },
-  set: (proxy, command: string, handler: Handler) => {
+  set: (proxy, command: string, handler: EventHandler) => {
     proxy.set(command, handler);
     return true;
   },
-}) as Proxy;
+}) as EventProxy;
 
-export const server = new Proxy(new Map<string, Handler>(), {
+export const server = new Proxy(new Map<string, EventHandler>(), {
   get: (proxy, event: string) => {
     return proxy.get(event);
   },
-  set: (proxy, event: string, handler: Handler) => {
+  set: (proxy, event: string, handler: EventHandler) => {
     if (proxy.has(event)) alt.offClient(event, proxy.get(event)!);
     proxy.set(event, handler);
     alt.onClient(event, async (player, ...args) => {
@@ -37,9 +41,9 @@ export const server = new Proxy(new Map<string, Handler>(), {
     });
     return true;
   },
-}) as Proxy;
+}) as EventProxy;
 
-export const client = new Proxy(new Map<string, Handler>(), {
+export const client = new Proxy(new Map<string, EventHandler>(), {
   get: (_proxy, event: string) => {
     return (...args: any[]) => {
       return new Promise((resolve) => {
@@ -71,4 +75,4 @@ export const client = new Proxy(new Map<string, Handler>(), {
   set: () => {
     throw TypeError("You can't set client events on server-side.");
   },
-}) as Proxy;
+}) as EventProxy;

@@ -1,16 +1,18 @@
-import { config, proxy } from "@client";
+import { proxy } from "@client";
 import * as alt from "alt-client";
-import type { Message } from "./types";
+
+export interface Message {
+  name: string | null;
+  text: string;
+}
 
 const buffer = [] as Message[];
 
 let loaded = false;
 let opened = false;
 
-proxy.client.loadChat = () => {
-  const view = proxy.webview(
-    new alt.WebView(`http://${config.WEBSERVER_ADDRESS}/plugins/chat`)
-  );
+proxy.client.loadChat = (url: string) => {
+  const view = proxy.webview(new alt.WebView(url));
 
   const addMessage = (name: string | null, text: string) => {
     if (name) {

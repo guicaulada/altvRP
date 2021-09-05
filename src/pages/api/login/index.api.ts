@@ -1,5 +1,5 @@
-import { crypto, getLogger, proxy } from "@server";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { config, crypto, getLogger, proxy } from "@server";
+import { NextApiRequest, NextApiResponse } from "next";
 import { getToken, getUser } from "./helpers/discord";
 import { authPlayer } from "./helpers/player";
 
@@ -14,11 +14,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const user = await getUser(token.access_token);
       console.log(user);
       proxy.client.closeLogin(player);
-      // proxy.client.loadCharacterCreation(player);
+      // proxy.client.loadCharacterCreation(player, `${config.WEBSERVER_URL}/plugins/character/creation`);
       player.spawn(1850.914306640625, -229.46372985839844, 293.2996826171875);
       player.model = "a_c_chimp";
       player.giveWeapon(0xaf113f99, 1000000, true);
-      proxy.client.loadChat(player);
+      proxy.client.loadChat(player, `${config.WEBSERVER_URL}/plugins/chat`);
       return res.status(200).send("OK");
     }
   } catch (err) {

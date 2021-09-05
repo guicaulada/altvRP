@@ -14,20 +14,20 @@ const formUrlEncoded = (x: any) =>
 
 export const getToken = async (code: string) => {
   const response = await axios.post<DiscordToken>(
-    "https://discord.com/api/v8/oauth2/token",
+    `${config.DISCORD_API_URL}/oauth2/token`,
     formUrlEncoded({
       client_id: config.DISCORD_CLIENT,
       client_secret: config.DISCORD_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: `http://${config.WEBSERVER_ADDRESS}/api/login`,
+      redirect_uri: `${config.WEBSERVER_URL}/api/login`,
     })
   );
   return response.data;
 };
 
 export const getUser = async (token: string) => {
-  const response = await axios.get("https://discord.com/api/v8/users/@me", {
+  const response = await axios.get(`${config.DISCORD_API_URL}/users/@me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

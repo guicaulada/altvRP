@@ -16,6 +16,6 @@ alt.on("playerConnect", (player) => {
       })
     ),
     config.DISCORD_CLIENT,
-    `http://${config.WEBSERVER_ADDRESS}/api/login`
+    `${config.WEBSERVER_URL}/api/login`
   );
 });

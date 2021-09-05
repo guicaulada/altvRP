@@ -3,8 +3,10 @@ import { getLogger } from "./logger";
 
 const logger = getLogger("altvrp:web:proxy");
 
-export type Handler = (...args: any[]) => any;
-export type Proxy<T=Handler> = Map<string, T> & { [key: string]: T };
+export type EventHandler = (...args: any[]) => any;
+export type EventProxy<T = EventHandler> = Map<string, T> & {
+  [key: string]: T;
+};
 
 const getAlt = () => {
   if (!window.alt) {
@@ -20,17 +22,17 @@ const getAlt = () => {
 const getProxyCallbackId = (event: string) =>
   `${event}:${Math.round(new Date().getTime())}`;
 
-export const local = new Proxy(new Map<string, Handler>(), {
+export const local = new Proxy(new Map<string, EventHandler>(), {
   get: (proxy, command: string) => {
     return proxy.get(command);
   },
-  set: (proxy, command: string, handler: Handler) => {
+  set: (proxy, command: string, handler: EventHandler) => {
     proxy.set(command, handler);
     return true;
   },
-}) as Proxy;
+}) as EventProxy;
 
-export const view = new Proxy(new Map<string, Handler>(), {
+export const view = new Proxy(new Map<string, EventHandler>(), {
   get: (proxy, event: string) => {
     const alt = getAlt();
     if (proxy.has(event)) return proxy.get(event);
@@ -48,7 +50,7 @@ export const view = new Proxy(new Map<string, Handler>(), {
       });
     };
   },
-  set: (proxy, event: string, handler: Handler) => {
+  set: (proxy, event: string, handler: EventHandler) => {
     const alt = getAlt();
     if (proxy.has(event)) alt.off(event, proxy.get(event)!);
     proxy.set(event, handler);
@@ -61,4 +63,4 @@ export const view = new Proxy(new Map<string, Handler>(), {
     });
     return true;
   },
-}) as Proxy;
+}) as EventProxy;

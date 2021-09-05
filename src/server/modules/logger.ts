@@ -1,30 +1,33 @@
 import * as alt from "alt-server";
-import type { Level, Logger } from "types";
 import * as config from "../config";
 
-const levels = {
-  DEBUG: 4,
-  INFO: 3,
-  WARN: 2,
-  ERROR: 1,
-};
+export enum Level {
+  ERROR,
+  WARN,
+  INFO,
+  DEBUG,
+}
 
-const getLevel = (type: Level) => levels[type];
-
-const log = (logger: string, text: any[], type: Level, level: Level) => {
-  if (getLevel(type) <= getLevel(level)) {
-    alt.log(`${logger} ${type}`, ...text);
-  }
-};
+export interface Logger {
+  debug: (...text: any[]) => void;
+  info: (...text: any[]) => void;
+  warn: (...text: any[]) => void;
+  error: (...text: any[]) => void;
+}
 
 export const getLogger = (
   name: string,
   level: Level = config.DEFAULT_LOG_LEVEL
 ): Logger => {
+  const log = (text: any, logLevel: Level = Level.INFO) => {
+    if (level >= logLevel) {
+      alt.log(`${name} ${Level[logLevel]}`, text);
+    }
+  };
   return {
-    debug: (...text: any[]) => log(name, text, "DEBUG", level),
-    info: (...text: any[]) => log(name, text, "INFO", level),
-    warn: (...text: any[]) => log(name, text, "WARN", level),
-    error: (...text: any[]) => log(name, text, "ERROR", level),
+    debug: (...text: any[]) => log(text, Level.DEBUG),
+    info: (...text: any[]) => log(text, Level.INFO),
+    warn: (...text: any[]) => log(text, Level.WARN),
+    error: (...text: any[]) => log(text, Level.ERROR),
   };
 };

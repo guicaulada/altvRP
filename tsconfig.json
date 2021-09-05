@@ -10,7 +10,6 @@
       "next-env.d.ts"
     ],
     "paths": {
-      "types": ["./types.d.ts"],
       "@server": ["./server"],
       "@client": ["./client"],
       "@plugins": ["./plugins"],

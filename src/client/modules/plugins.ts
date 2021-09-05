@@ -1,6 +1,7 @@
-import type { Plugin } from "types";
 import { getLogger } from "./logger";
 import * as proxy from "./proxy";
+
+export type Plugin = { name: string; path: string };
 
 const logger = getLogger("altvrp:plugins");
 const plugins = {} as { [key: string]: any };
