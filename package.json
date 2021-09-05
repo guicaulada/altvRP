@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "alt:V RP framework",
   "type": "module",
+  "private": true,
   "scripts": {
     "start": "cd ../.. && altv-server.exe",
-    "start:dev": "yarn build && yarn start",
     "watch": "yarn build:clean && yarn build:watch",
     "build": "yarn build:clean && yarn build:server && yarn build:views",
+    "start:dev": "yarn build && yarn start",
     "build:clean": "npx del -f dist",
     "build:server": "npx babel src --out-dir dist --extensions .ts",
     "build:views": "cd views && yarn build && cd ..",
