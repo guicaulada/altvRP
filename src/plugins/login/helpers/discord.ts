@@ -20,7 +20,7 @@ export const getToken = async (code: string) => {
       client_secret: config.DISCORD_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: `${config.WEBSERVER_URL}/api/login`,
+      redirect_uri: `${config.SERVER_API_URL}/authorize`,
     })
   );
   return response.data;

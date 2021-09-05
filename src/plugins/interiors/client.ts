@@ -1,4 +1,4 @@
-import alt from "alt-client";
+import * as alt from "alt-client";
 
 alt.requestIpl("ex_dt1_02_office_02b");
 alt.requestIpl("chop_props");

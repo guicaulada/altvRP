@@ -1,3 +1,4 @@
+import "@plugins/chat/server";
 import { proxy } from "@server";
 import * as alt from "alt-server";
 

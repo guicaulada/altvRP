@@ -2,40 +2,26 @@
   "name": "@sighmir/altvrp",
   "version": "1.0.0",
   "description": "alt:V RP framework",
+  "type": "module",
   "scripts": {
     "start": "cd ../.. && altv-server.exe",
     "start:dev": "yarn build && yarn start",
     "watch": "yarn build:clean && yarn build:watch",
-    "build": "yarn build:clean && yarn build:alt && yarn next:build",
+    "build": "yarn build:clean && yarn build:server && yarn build:views",
     "build:clean": "npx del -f dist",
-    "build:alt": "npx babel src --out-dir dist --extensions .ts",
-    "build:watch": "npx babel --watch src --out-dir dist --extensions .ts",
-    "next:start": "npx next start",
-    "next:build": "npx next build",
-    "next:dev": "yarn next:build && yarn next:start"
+    "build:server": "npx babel src --out-dir dist --extensions .ts",
+    "build:views": "cd views && yarn build && cd ..",
+    "build:watch": "npx babel --watch src --out-dir dist --extensions .ts"
   },
   "_moduleAliases": {
     "@server": "dist/server",
     "@client": "dist/client",
-    "@plugins": "dist/plugins",
-    "@pages": "dist/pages"
+    "@plugins": "dist/plugins"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sighmir/altvrp.git"
   },
-  "keywords": [
-    "sighmir",
-    "vrp",
-    "altmp",
-    "altv",
-    "node",
-    "node-module",
-    "js-module",
-    "gta",
-    "gta5",
-    "gtav"
-  ],
   "author": "Sighmir",
   "license": "MIT",
   "bugs": {
@@ -50,25 +36,17 @@
     "@altv/types-webview": "^1.0.2",
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
-    "@babel/plugin-proposal-private-methods": "^7.14.5",
-    "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
     "@babel/preset-flow": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
     "@types/express": "^4.17.13",
     "@types/glob": "^7.1.4",
     "@types/node": "^16.7.5",
-    "@types/react": "^17.0.19",
-    "@types/styled-components": "^5.1.13",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "copyfiles": "^2.4.1",
     "del-cli": "^4.0.1",
     "dotenv": "^10.0.0",
-    "eslint": "^7.32.0",
-    "eslint-config-next": "^11.1.2",
-    "typescript": "^4.4.2",
-    "webpack-node-externals": "^3.0.0"
+    "typescript": "4.4.2"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.3",

@@ -1,4 +1,4 @@
-import alt from "alt-server";
+import * as alt from "alt-server";
 import glob from "glob";
 import path from "path";
 import { getLogger } from "./logger";
@@ -16,7 +16,13 @@ const fileUrl = (str: string) => {
 
 const logger = getLogger("altvrp:plugins");
 const plugins = {} as { [key: string]: any };
-const pluginsPath = path.resolve(".", "resources", "altvrp", "dist", "plugins");
+const pluginsPath = path.resolve(
+  ".",
+  "resources",
+  alt.resourceName,
+  "dist",
+  "plugins"
+);
 
 const serverFiles = [
   ...glob.sync(path.join(pluginsPath, "/**/server/**/*.js")),

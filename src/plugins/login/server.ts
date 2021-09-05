@@ -1,5 +1,6 @@
 import { config, crypto, getLogger, proxy } from "@server";
 import * as alt from "alt-server";
+import "./api";
 
 const logger = getLogger("altvrp:login");
 
@@ -16,6 +17,6 @@ alt.on("playerConnect", (player) => {
       })
     ),
     config.DISCORD_CLIENT,
-    `${config.WEBSERVER_URL}/api/login`
+    `${config.SERVER_API_URL}/authorize`
   );
 });

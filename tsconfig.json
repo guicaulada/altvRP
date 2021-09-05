@@ -13,11 +13,9 @@
       "@server": ["./server"],
       "@client": ["./client"],
       "@plugins": ["./plugins"],
-      "@pages": ["./pages"],
       "@server/*": ["./server/*"],
       "@client/*": ["./client/*"],
       "@plugins/*": ["./plugins/*"],
-      "@pages/*": ["./pages/*"]
     },
     "module": "ESNext",
     "target": "ESNext",
@@ -50,12 +48,6 @@
     "noEmit": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "jsx": "preserve"
   },
   "exclude": [
     "node_modules"

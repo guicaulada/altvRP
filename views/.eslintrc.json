@@ -3,6 +3,6 @@
   "ignorePatterns": [
     "babel.config.js",
     "next.config.js",
-    "dist"
+    ".next"
   ]
 }

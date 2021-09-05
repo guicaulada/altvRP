@@ -19,9 +19,9 @@ export const getLogger = (
   name: string,
   level: Level = config.DEFAULT_LOG_LEVEL
 ): Logger => {
-  const log = (text: any, logLevel: Level = Level.INFO) => {
+  const log = (text: any[], logLevel: Level = Level.INFO) => {
     if (level >= logLevel) {
-      alt.log(`${name} ${Level[logLevel]}`, text);
+      alt.log(`${name} ${Level[logLevel]}`, ...text);
     }
   };
   return {

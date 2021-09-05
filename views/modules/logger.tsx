@@ -13,9 +13,9 @@ export interface Logger {
 }
 
 export const getLogger = (name: string, level: Level = Level.DEBUG): Logger => {
-  const log = (text: any, logLevel: Level = Level.INFO) => {
+  const log = (text: any[], logLevel: Level) => {
     if (level >= logLevel) {
-      console.log(`[${Level[logLevel]}] [${name}]`, text);
+      console.log(`[${Level[logLevel]}] [${name}]`, ...text);
     }
   };
   return {
