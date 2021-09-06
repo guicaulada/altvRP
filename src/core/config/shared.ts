@@ -1,4 +1,4 @@
-import { LogLevel } from "core/types";
+import { LogLevel } from "core/shared/types";
 
 // LOGGER
 export const DEFAULT_LOG_LEVEL = LogLevel.DEBUG;

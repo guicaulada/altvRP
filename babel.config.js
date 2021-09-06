@@ -13,10 +13,6 @@ export default {
         "core": "./src/core",
         "plugins": "./src/plugins"
       }
-    }],
-    ["module-extension-resolver", {
-      srcExtensions: [".d.ts"],
-      dstExtension: ".d.js"
     }]
   ]
 };

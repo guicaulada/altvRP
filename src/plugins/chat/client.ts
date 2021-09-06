@@ -1,8 +1,11 @@
 import * as alt from "alt-client";
 import * as proxy from "core/client/proxy";
 import * as config from "core/config/shared";
-import { WebProxy } from "core/types";
-import { Message } from "./types";
+import { WebProxy } from "core/shared/types";
+export interface Message {
+  name: string | null;
+  text: string;
+}
 
 const buffer = [] as Message[];
 

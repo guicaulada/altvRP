@@ -4,13 +4,7 @@ import * as crypto from "core/server/crypto";
 import * as proxy from "core/server/proxy";
 import { getLogger } from "core/shared/logger";
 import { getToken, getUser } from "./discord";
-
-interface AuthState {
-  ip: string;
-  id: number;
-  hwidExHash: string;
-  hwidHash: string;
-}
+import { AuthState } from "./types";
 
 const logger = getLogger("altvrp:api:login");
 

@@ -1,6 +1,6 @@
 import * as alt from "alt-client";
 import * as proxy from "core/client/proxy";
-import { WebProxy } from "core/types";
+import { WebProxy } from "core/shared/types";
 
 let view: WebProxy;
 

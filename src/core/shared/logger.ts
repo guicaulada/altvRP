@@ -1,6 +1,6 @@
 import * as alt from "alt-shared";
 import * as config from "core/config/shared";
-import { Logger, LogLevel } from "core/types";
+import { Logger, LogLevel } from "core/shared/types";
 
 export const getLogger = (
   name: string,

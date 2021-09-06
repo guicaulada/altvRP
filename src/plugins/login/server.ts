@@ -5,6 +5,7 @@ import * as proxy from "core/server/proxy";
 import { getLogger } from "core/shared/logger";
 import * as login from "./config/server";
 import "./server/api";
+import { AuthState } from "./server/types";
 
 const logger = getLogger("altvrp:login");
 
@@ -18,7 +19,7 @@ alt.on("playerConnect", (player) => {
         id: player.id,
         hwidExHash: player.hwidExHash,
         hwidHash: player.hwidHash,
-      })
+      } as AuthState)
     ),
     login.DISCORD_CLIENT,
     `${shared.SERVER_API_URL}/authorize`

@@ -43,7 +43,6 @@
     "@types/express": "^4.17.13",
     "@types/glob": "^7.1.4",
     "@types/node": "^16.7.5",
-    "babel-plugin-module-extension-resolver": "^1.0.0-rc.2",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "copyfiles": "^2.4.1",

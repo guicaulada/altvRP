@@ -1,14 +1,7 @@
 import axios from "axios";
 import * as shared from "core/config/shared";
 import * as login from "../config/server";
-
-export interface DiscordToken {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-  token_type: string;
-}
+import { DiscordToken } from "./types";
 
 const formUrlEncoded = (x: any) =>
   Object.keys(x).reduce((p, c) => p + `&${c}=${encodeURIComponent(x[c])}`, "");

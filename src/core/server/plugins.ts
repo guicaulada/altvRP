@@ -1,6 +1,6 @@
 import * as alt from "alt-server";
 import { getLogger } from "core/shared/logger";
-import { Plugin } from "core/types";
+import { Plugin } from "core/shared/types";
 import glob from "glob";
 import path from "path";
 import * as proxy from "./proxy";

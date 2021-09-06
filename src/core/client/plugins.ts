@@ -1,5 +1,5 @@
 import { getLogger } from "core/shared/logger";
-import { Plugin } from "core/types";
+import { Plugin } from "core/shared/types";
 import * as proxy from "./proxy";
 
 const logger = getLogger("altvrp:plugins");

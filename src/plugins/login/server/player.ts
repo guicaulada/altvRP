@@ -1,11 +1,5 @@
 import * as alt from "alt-server";
-
-interface AuthState {
-  ip: string;
-  id: number;
-  hwidExHash: string;
-  hwidHash: string;
-}
+import { AuthState } from "./types";
 
 export const authPlayer = (state: AuthState) => {
   const player = alt.Player.getByID(state.id);

@@ -1,13 +1,11 @@
 {
   "include": [
     "./src/**/*.ts",
-    "./src/**/*.tsx"
   ],
   "compilerOptions": {
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/@altv",
-      "next-env.d.ts"
+      "./node_modules/@altv"
     ],
     "paths": {
       "core": ["./core"],

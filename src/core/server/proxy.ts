@@ -1,6 +1,6 @@
 import * as alt from "alt-server";
 import { getLogger } from "core/shared/logger";
-import { EventHandler, EventProxy } from "core/types";
+import { EventHandler, EventProxy } from "core/shared/types";
 
 const logger = getLogger("altvrp:proxy");
 
