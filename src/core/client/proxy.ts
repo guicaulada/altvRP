@@ -1,13 +1,6 @@
 import * as alt from "alt-client";
-import { getLogger } from "./logger";
-
-export type EventHandler = (...args: any[]) => any;
-export type EventProxy<T = EventHandler> = Map<string, T> & {
-  [key: string]: T;
-};
-export type WebProxy<T = EventHandler> = {
-  webview: alt.WebView;
-} & EventProxy<T>;
+import { getLogger } from "core/shared/logger";
+import { EventHandler, EventProxy, WebProxy } from "core/types";
 
 const logger = getLogger("altvrp:proxy");
 

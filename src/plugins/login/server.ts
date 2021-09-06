@@ -1,6 +1,10 @@
-import { config, crypto, getLogger, proxy } from "@server";
 import * as alt from "alt-server";
-import "./api";
+import * as shared from "core/config/shared";
+import * as crypto from "core/server/crypto";
+import * as proxy from "core/server/proxy";
+import { getLogger } from "core/shared/logger";
+import * as login from "./config/server";
+import "./server/api";
 
 const logger = getLogger("altvrp:login");
 
@@ -16,7 +20,7 @@ alt.on("playerConnect", (player) => {
         hwidHash: player.hwidHash,
       })
     ),
-    config.DISCORD_CLIENT,
-    `${config.SERVER_API_URL}/authorize`
+    login.DISCORD_CLIENT,
+    `${shared.SERVER_API_URL}/authorize`
   );
 });

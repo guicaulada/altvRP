@@ -1,10 +1,9 @@
 import * as alt from "alt-server";
+import { getLogger } from "core/shared/logger";
+import { Plugin } from "core/types";
 import glob from "glob";
 import path from "path";
-import { getLogger } from "./logger";
 import * as proxy from "./proxy";
-
-export type Plugin = { name: string; path: string };
 
 const fileUrl = (str: string) => {
   var pathName = path.resolve(str).replace(/\\/g, "/");
@@ -24,15 +23,9 @@ const pluginsPath = path.resolve(
   "plugins"
 );
 
-const serverFiles = [
-  ...glob.sync(path.join(pluginsPath, "/**/server/**/*.js")),
-  ...glob.sync(path.join(pluginsPath, "/**/server.js")),
-];
+const serverFiles = [...glob.sync(path.join(pluginsPath, "/*/server.js"))];
 
-const clientFiles = [
-  ...glob.sync(path.join(pluginsPath, "/**/client/**/*.js")),
-  ...glob.sync(path.join(pluginsPath, "/**/client.js")),
-];
+const clientFiles = [...glob.sync(path.join(pluginsPath, "/*/client.js"))];
 
 serverFiles.forEach((file) => {
   const url = fileUrl(file);

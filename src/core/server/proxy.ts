@@ -1,10 +1,6 @@
 import * as alt from "alt-server";
-import { getLogger } from "./logger";
-
-export type EventHandler = (...args: any[]) => any;
-export type EventProxy<T = EventHandler> = Map<string, T> & {
-  [key: string]: T;
-};
+import { getLogger } from "core/shared/logger";
+import { EventHandler, EventProxy } from "core/types";
 
 const logger = getLogger("altvrp:proxy");
 

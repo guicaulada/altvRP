@@ -1,6 +1,7 @@
-import { getLogger, proxy } from "@server";
-import { EventHandler } from "@server/modules/proxy";
 import * as alt from "alt-server";
+import * as proxy from "core/server/proxy";
+import { getLogger } from "core/shared/logger";
+import { EventHandler } from "core/types";
 
 const chatLogger = getLogger("altvrp:chat:message");
 const cmdLogger = getLogger("altvrp:chat:command");

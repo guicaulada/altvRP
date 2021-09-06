@@ -9,15 +9,16 @@
     "watch": "yarn build:clean && yarn build:watch",
     "build": "yarn build:clean && yarn build:server && yarn build:views",
     "start:dev": "yarn build && yarn start",
+    "start:dev:server": "yarn build:server && yarn start",
     "build:clean": "npx del -f dist",
-    "build:server": "npx babel src --out-dir dist --extensions .ts",
     "build:views": "cd views && yarn build && cd ..",
-    "build:watch": "npx babel --watch src --out-dir dist --extensions .ts"
+    "build:server": "yarn build:clean && yarn build:src",
+    "build:watch": "npx babel --watch src --out-dir dist --extensions .ts",
+    "build:src": "npx babel src --out-dir dist --extensions .ts"
   },
   "_moduleAliases": {
-    "@server": "dist/server",
-    "@client": "dist/client",
-    "@plugins": "dist/plugins"
+    "core": "dist/core",
+    "plugins": "dist/plugins"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "@types/express": "^4.17.13",
     "@types/glob": "^7.1.4",
     "@types/node": "^16.7.5",
+    "babel-plugin-module-extension-resolver": "^1.0.0-rc.2",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "copyfiles": "^2.4.1",

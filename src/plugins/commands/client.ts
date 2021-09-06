@@ -1,5 +1,5 @@
-import { proxy } from "@client";
 import * as alt from "alt-client";
+import * as proxy from "core/client/proxy";
 import * as game from "natives";
 
 proxy.client.setPlayerIntoVehicle = (veh: alt.Vehicle, seat: number = -1) => {

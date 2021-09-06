@@ -1,6 +1,10 @@
-import { api, config, crypto, getLogger, proxy } from "@server";
 import * as alt from "alt-server";
-import { getToken, getUser } from "./helpers/discord";
+import * as config from "core/config/shared";
+import api from "core/server/api";
+import * as crypto from "core/server/crypto";
+import * as proxy from "core/server/proxy";
+import { getLogger } from "core/shared/logger";
+import { getToken, getUser } from "./discord";
 
 interface AuthState {
   ip: string;

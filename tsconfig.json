@@ -10,12 +10,10 @@
       "next-env.d.ts"
     ],
     "paths": {
-      "@server": ["./server"],
-      "@client": ["./client"],
-      "@plugins": ["./plugins"],
-      "@server/*": ["./server/*"],
-      "@client/*": ["./client/*"],
-      "@plugins/*": ["./plugins/*"],
+      "core": ["./core"],
+      "plugins": ["./plugins"],
+      "core/*": ["./core/*"],
+      "plugins/*": ["./plugins/*"],
     },
     "module": "ESNext",
     "target": "ESNext",

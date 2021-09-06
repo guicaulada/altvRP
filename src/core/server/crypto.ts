@@ -1,5 +1,5 @@
+import * as config from "core/config/server";
 import crypto from "crypto";
-import * as config from "../config";
 
 const algorithm = "AES-256-GCM";
 const secretKey = Buffer.alloc(32).fill(

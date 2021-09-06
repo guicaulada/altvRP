@@ -1,5 +1,6 @@
-import { config } from "@server";
 import axios from "axios";
+import * as shared from "core/config/shared";
+import * as login from "../config/server";
 
 export interface DiscordToken {
   access_token: string;
@@ -14,20 +15,20 @@ const formUrlEncoded = (x: any) =>
 
 export const getToken = async (code: string) => {
   const response = await axios.post<DiscordToken>(
-    `${config.DISCORD_API_URL}/oauth2/token`,
+    `${login.DISCORD_API_URL}/oauth2/token`,
     formUrlEncoded({
-      client_id: config.DISCORD_CLIENT,
-      client_secret: config.DISCORD_SECRET,
+      client_id: login.DISCORD_CLIENT,
+      client_secret: login.DISCORD_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: `${config.SERVER_API_URL}/authorize`,
+      redirect_uri: `${shared.SERVER_API_URL}/authorize`,
     })
   );
   return response.data;
 };
 
 export const getUser = async (token: string) => {
-  const response = await axios.get(`${config.DISCORD_API_URL}/users/@me`, {
+  const response = await axios.get(`${login.DISCORD_API_URL}/users/@me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

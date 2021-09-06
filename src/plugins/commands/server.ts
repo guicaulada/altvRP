@@ -1,6 +1,6 @@
-import "@plugins/chat/server";
-import { proxy } from "@server";
 import * as alt from "alt-server";
+import * as proxy from "core/server/proxy";
+import "plugins/chat/server";
 
 proxy.local.registerCommand("spawn", (player: alt.Player) => {
   player.spawn(1850.914306640625, -229.46372985839844, 293.2996826171875);

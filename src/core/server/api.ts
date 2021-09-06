@@ -1,6 +1,6 @@
-import { config } from "@server";
+import * as config from "core/config/shared";
+import { getLogger } from "core/shared/logger";
 import express from "express";
-import { getLogger } from "./logger";
 
 const logger = getLogger("altvrp:api");
 const api = express();
