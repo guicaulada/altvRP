@@ -1,5 +1,4 @@
 import * as alt from "alt-server";
-import * as config from "core/config/shared";
 import api from "core/server/api";
 import * as crypto from "core/server/crypto";
 import * as proxy from "core/server/proxy";
@@ -37,16 +36,18 @@ api.get("/authorize", async (req, res) => {
       const token = await getToken(req.query.code as string);
       const user = await getUser(token.access_token);
       console.log(user);
-      proxy.client.closeLogin(player);
       player.spawn(1850.914306640625, -229.46372985839844, 293.2996826171875);
       player.model = "a_c_chimp";
       player.giveWeapon(0xaf113f99, 1000000, true);
-      proxy.client.loadChat(player, `${config.VIEWS_URL}/ui/chat`);
-      return res.status(200).send("OK");
+      setTimeout(() => {
+        proxy.client.closeLogin(player);
+        proxy.client.loadChat(player);
+      }, 1000);
+      return res.status(200).send();
     }
   } catch (err) {
     console.log(err);
   }
   logger.error(`Invalid authorization request received from ${ip}`);
-  return res.status(401).send("Unauthorized");
+  return res.status(401).send();
 });

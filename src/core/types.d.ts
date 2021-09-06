@@ -1,3 +1,5 @@
+import type { WebView } from "alt-client";
+
 export enum LogLevel {
   ERROR,
   WARN,
@@ -19,5 +21,5 @@ export type EventProxy<T = EventHandler> = Map<string, T> & {
   [key: string]: T;
 };
 export type WebProxy<T = EventHandler> = {
-  webview: alt.WebView;
+  webview: WebView;
 } & EventProxy<T>;
