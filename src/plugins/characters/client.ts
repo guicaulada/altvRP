@@ -26,20 +26,22 @@ proxy.client.loadCharacterCreation = () => {
     proxy.server.changeModel(model);
     alt.setTimeout(() => {
       game.setGameplayCamRelativeHeading(180);
+      if (lastAppearance) {
+        game.setPedHeadBlendData(
+          pid,
+          lastAppearance.mother.face,
+          lastAppearance.father.face,
+          0,
+          0.0,
+          lastAppearance.mother.skin,
+          lastAppearance.father.skin,
+          lastAppearance.faceMix,
+          lastAppearance.skinMix,
+          0.0,
+          false
+        );
+      }
     }, 1000);
-    game.setPedHeadBlendData(
-      pid,
-      lastAppearance.mother.face,
-      lastAppearance.father.face,
-      0,
-      0.0,
-      lastAppearance.mother.skin,
-      lastAppearance.father.skin,
-      lastAppearance.faceMix,
-      lastAppearance.skinMix,
-      0.0,
-      false
-    );
   };
 
   view.setAppearance = (appearance: AppearanceData) => {

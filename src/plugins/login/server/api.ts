@@ -30,12 +30,13 @@ api.get("/authorize", async (req, res) => {
       const token = await getToken(req.query.code as string);
       const user = await getUser(token.access_token);
       console.log(user);
-      player.spawn(1850.914306640625, -229.46372985839844, 293.2996826171875);
       player.model = "a_c_chimp";
-      player.giveWeapon(0xaf113f99, 1000000, true);
-      setTimeout(() => {
+      player.spawn(-38.36043930053711, -590.017578125, 78.818359375);
+      alt.setTimeout(() => {
         proxy.client.closeLogin(player);
-        proxy.client.loadChat(player);
+        alt.setTimeout(() => {
+          proxy.client.loadCharacterCreation(player);
+        }, 500);
       }, 1000);
       return res.status(200).send();
     }
