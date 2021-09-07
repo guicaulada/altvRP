@@ -55,5 +55,5 @@ proxy.local.registerCommand("noclip", (player: alt.Player) => {
 
 proxy.local.registerCommand("creator", (player: alt.Player) => {
   player.spawn(-38.36043930053711, -590.017578125, 78.818359375);
-  player.model = "mp_m_freemode_01";
+  proxy.client.loadCharacterCreation(player);
 });
