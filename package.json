@@ -12,7 +12,7 @@
     "start:dev": "yarn build:server && yarn start",
     "start:dev:full": "yarn build && yarn start",
     "build:clean": "npx del -f dist",
-    "build:views": "cd views && yarn build && cd ..",
+    "build:views": "cd views && yarn next:build && cd ..",
     "build:server": "yarn build:clean && yarn build:src",
     "build:watch": "npx babel --watch src --out-dir dist --extensions .ts",
     "build:src": "npx babel src --out-dir dist --extensions .ts"
