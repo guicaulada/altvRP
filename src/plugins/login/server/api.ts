@@ -1,12 +1,12 @@
-import * as alt from "alt-server";
-import api from "core/server/api";
-import * as crypto from "core/server/crypto";
-import * as proxy from "core/server/proxy";
-import { getLogger } from "core/shared/logger";
-import { getToken, getUser } from "./discord";
-import { AuthState } from "./types";
+import * as alt from 'alt-server';
+import api from 'core/server/api';
+import * as crypto from 'core/server/crypto';
+import * as proxy from 'core/server/proxy';
+import { getLogger } from 'core/shared/logger';
+import { getToken, getUser } from './discord';
+import { AuthState } from './types';
 
-const logger = getLogger("altvrp:api:login");
+const logger = getLogger('altvrp:api:login');
 
 const authPlayer = (state: AuthState) => {
   const player = alt.Player.getByID(state.id);
@@ -21,8 +21,8 @@ const authPlayer = (state: AuthState) => {
   return;
 };
 
-api.get("/authorize", async (req, res) => {
-  const ip = req.ip.split(":").pop();
+api.get('/authorize', async (req, res) => {
+  const ip = req.ip.split(':').pop();
   try {
     const state = JSON.parse(crypto.decrypt(req.query.state as string));
     const player = authPlayer(state);

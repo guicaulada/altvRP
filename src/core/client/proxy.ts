@@ -1,11 +1,10 @@
-import * as alt from "alt-client";
-import { getLogger } from "core/shared/logger";
-import { EventHandler, EventProxy, WebProxy } from "core/shared/types";
+import * as alt from 'alt-client';
+import { getLogger } from 'core/shared/logger';
+import { EventHandler, EventProxy, WebProxy } from 'core/shared/types';
 
-const logger = getLogger("altvrp:proxy");
+const logger = getLogger('altvrp:proxy');
 
-const getProxyCallbackId = (event: string) =>
-  `${event}:${Math.round(new Date().getTime())}`;
+const getProxyCallbackId = (event: string) => `${event}:${Math.round(new Date().getTime())}`;
 
 export const local = new Proxy(new Map<string, EventHandler>(), {
   get: (proxy, command: string) => {
@@ -22,7 +21,8 @@ export const client = new Proxy(new Map<string, EventHandler>(), {
     return proxy.get(event);
   },
   set: (proxy, event: string, handler: EventHandler) => {
-    if (proxy.has(event)) alt.offServer(event, proxy.get(event)!);
+    const prevHandler = proxy.get(event);
+    if (prevHandler) alt.offServer(event, prevHandler);
     proxy.set(event, handler);
     alt.onServer(event, async (...args) => {
       const id = args.shift();
@@ -54,11 +54,11 @@ export const server = new Proxy(new Map<string, EventHandler>(), {
   },
 }) as EventProxy;
 
-export const webview = (view: alt.WebView) => {
+export const webview = (view: alt.WebView): WebProxy => {
   return new Proxy(new Map<string, EventHandler>(), {
     get: (proxy, event: string) => {
       if (proxy.has(event)) return proxy.get(event);
-      if (event === "webview") return view;
+      if (event === 'webview') return view;
       return (...args: any[]) => {
         return new Promise((resolve) => {
           const id = getProxyCallbackId(event);
@@ -72,10 +72,11 @@ export const webview = (view: alt.WebView) => {
       };
     },
     set: (proxy, event: string, handler: EventHandler) => {
-      if (event === "webview") {
+      if (event === 'webview') {
         throw TypeError("You can't redefine the view on the webview proxy!");
       }
-      if (proxy.has(event)) view.off(event, proxy.get(event)!);
+      const prevHandler = proxy.get(event);
+      if (prevHandler) view.off(event, prevHandler);
       proxy.set(event, handler);
       view.on(event, async (...args) => {
         const id = args.shift();

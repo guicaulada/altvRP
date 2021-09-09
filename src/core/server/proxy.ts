@@ -1,15 +1,13 @@
-import * as alt from "alt-server";
-import { getLogger } from "core/shared/logger";
-import { EventHandler, EventProxy } from "core/shared/types";
+import * as alt from 'alt-server';
+import { getLogger } from 'core/shared/logger';
+import { EventHandler, EventProxy } from 'core/shared/types';
 
-const logger = getLogger("altvrp:proxy");
+const logger = getLogger('altvrp:proxy');
 
-const getProxyCallbackId = (event: string) =>
-  `${event}:${Math.round(new Date().getTime())}`;
+const getProxyCallbackId = (event: string) => `${event}:${Math.round(new Date().getTime())}`;
 
-const isPlayer = (p: alt.Player | alt.Player[]) =>
-  p instanceof alt.Player ||
-  (p instanceof Array && p.every((i) => i instanceof alt.Player));
+const isPlayer = (p: any | any[]) =>
+  p instanceof alt.Player || (p instanceof Array && p.every((i) => i instanceof alt.Player));
 
 export const local = new Proxy(new Map<string, EventHandler>(), {
   get: (proxy, command: string) => {
@@ -26,7 +24,8 @@ export const server = new Proxy(new Map<string, EventHandler>(), {
     return proxy.get(event);
   },
   set: (proxy, event: string, handler: EventHandler) => {
-    if (proxy.has(event)) alt.offClient(event, proxy.get(event)!);
+    const prevHandler = proxy.get(event);
+    if (prevHandler) alt.offClient(event, prevHandler);
     proxy.set(event, handler);
     alt.onClient(event, async (player, ...args) => {
       const id = args.shift();
@@ -45,7 +44,7 @@ export const client = new Proxy(new Map<string, EventHandler>(), {
       return new Promise((resolve) => {
         const id = getProxyCallbackId(event);
         if (isPlayer(args[0])) {
-          const player = args.shift();
+          const player = args.shift() as alt.Player;
           alt.onceClient(id, (_, result) => {
             logger.debug(`${event} ${player.id} ${args} <===!`);
             resolve(result);

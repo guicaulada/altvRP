@@ -1,7 +1,7 @@
-import * as alt from "alt-server";
-import { AuthState } from "./types";
+import * as alt from 'alt-server';
+import { AuthState } from './types';
 
-export const authPlayer = (state: AuthState) => {
+export const authPlayer = (state: AuthState): alt.Player | void => {
   const player = alt.Player.getByID(state.id);
   if (
     player &&

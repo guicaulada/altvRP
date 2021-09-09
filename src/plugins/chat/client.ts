@@ -1,7 +1,7 @@
-import * as alt from "alt-client";
-import * as proxy from "core/client/proxy";
-import * as config from "core/config/shared";
-import { WebProxy } from "core/shared/types";
+import * as alt from 'alt-client';
+import * as proxy from 'core/client/proxy';
+import config from 'core/config/shared';
+import { WebProxy } from 'core/shared/types';
 export interface Message {
   name: string | null;
   text: string;
@@ -13,7 +13,7 @@ let loaded = false;
 let opened = false;
 let view: WebProxy;
 
-alt.on("keyup", (key) => {
+alt.on('keyup', (key) => {
   if (loaded) {
     if (!opened && key === 0x54 && alt.gameControlsEnabled()) {
       opened = true;
@@ -30,10 +30,12 @@ alt.on("keyup", (key) => {
 });
 
 const addMessage = (name: string | null, text: string) => {
-  if (name) {
-    view!.addMessage(name, text);
-  } else {
-    view!.addString(text);
+  if (view) {
+    if (name) {
+      view.addMessage(name, text);
+    } else {
+      view.addString(text);
+    }
   }
 };
 
@@ -63,6 +65,6 @@ proxy.client.loadChat = () => {
       view.webview.unfocus();
     };
 
-    proxy.client.chatMessage(null, "alt:V Multiplayer has started");
+    proxy.client.chatMessage(null, 'alt:V Multiplayer has started');
   }
 };

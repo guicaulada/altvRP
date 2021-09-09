@@ -1,5 +1,9 @@
-// SECRETS
-export const CRYPTO_SECRET = process.env.CRYPTO_SECRET!;
+const config = {
+  // SECRETS
+  CRYPTO_SECRET: process.env.CRYPTO_SECRET || '',
 
-// VIEWS
-export const LOCAL_VIEWS = true;
+  // VIEWS
+  LOCAL_VIEWS: true,
+};
+
+export default config;

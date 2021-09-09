@@ -1,13 +1,13 @@
-import { getLogger } from "core/shared/logger";
-import { Plugin } from "core/shared/types";
-import * as proxy from "./proxy";
+import { getLogger } from 'core/shared/logger';
+import { Plugin } from 'core/shared/types';
+import * as proxy from './proxy';
 
-const logger = getLogger("altvrp:plugins");
+const logger = getLogger('altvrp:plugins');
 const plugins = {} as { [key: string]: any };
 
 proxy.client.loadPlugins = (pluginsList: Plugin[]) => {
   pluginsList.forEach((p) => {
-    if (p.name[0] != "_") {
+    if (p.name[0] != '_') {
       logger.info(`Loading plugin ~y~${p.name}`);
       try {
         plugins[p.name] = import(p.path);

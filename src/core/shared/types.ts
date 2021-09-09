@@ -1,4 +1,4 @@
-import type { WebView } from "alt-client";
+import type { WebView } from 'alt-client';
 
 export enum LogLevel {
   ERROR,

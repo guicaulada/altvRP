@@ -1,8 +1,8 @@
-import * as alt from "alt-client";
-import * as proxy from "core/client/proxy";
-import * as game from "natives";
+import * as alt from 'alt-client';
+import * as proxy from 'core/client/proxy';
+import * as game from 'natives';
 
-proxy.client.setPlayerIntoVehicle = (veh: alt.Vehicle, seat: number = -1) => {
+proxy.client.setPlayerIntoVehicle = (veh: alt.Vehicle, seat = -1) => {
   let cleared = false;
   const interval = alt.setInterval(() => {
     const vehicleScriptId = veh.scriptID;
@@ -35,26 +35,10 @@ proxy.client.toggleNoclip = () => {
       const pos = alt.Player.local.pos;
       const dir = proxy.local.getCameraDirection();
       if (alt.isKeyToggled(87) === true) {
-        game.setEntityCoordsNoOffset(
-          pid,
-          pos.x + dir.x,
-          pos.y + dir.y,
-          pos.z + dir.z,
-          false,
-          false,
-          false
-        );
+        game.setEntityCoordsNoOffset(pid, pos.x + dir.x, pos.y + dir.y, pos.z + dir.z, false, false, false);
       }
       if (alt.isKeyToggled(83) === true) {
-        game.setEntityCoordsNoOffset(
-          pid,
-          pos.x - dir.x,
-          pos.y - dir.y,
-          pos.z - dir.z,
-          false,
-          false,
-          false
-        );
+        game.setEntityCoordsNoOffset(pid, pos.x - dir.x, pos.y - dir.y, pos.z - dir.z, false, false, false);
       }
     });
   } else {
@@ -71,7 +55,7 @@ proxy.local.getCameraDirection = () => {
   let x = -Math.sin((heading * Math.PI) / 180.0);
   let y = Math.cos((heading * Math.PI) / 180.0);
   let z = Math.sin((pitch * Math.PI) / 180.0);
-  let len = Math.sqrt(x * x + y * y + z * z);
+  const len = Math.sqrt(x * x + y * y + z * z);
   if (len != 0) {
     x = x / len;
     y = y / len;
