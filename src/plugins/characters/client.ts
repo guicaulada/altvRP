@@ -68,10 +68,7 @@ proxy.client.loadCharacterCreation = () => {
   };
 
   const view = proxy.webview(
-    new alt.WebView(
-      `${config.VIEWS_URL}/ui/character/creation/appearance`,
-      true
-    )
+    new alt.WebView(`${config.VIEWS_URL}/ui/character/creation`, true)
   );
 
   alt.toggleGameControls(false);
