@@ -1,7 +1,6 @@
 import * as alt from 'alt-client';
 import * as proxy from 'core/client/proxy';
 import config from 'core/config/shared';
-import './client/appearance';
 import { Appearance, Parents } from './types';
 
 proxy.client.loadCharacterCreation = () => {
@@ -31,7 +30,7 @@ proxy.client.loadCharacterCreation = () => {
     appearance.model = `mp_${gender}_freemode_01`;
     proxy.server.changeModel(appearance.model);
     alt.setTimeout(() => {
-      proxy.client.setPedHeadBlendData(appearance);
+      proxy.client.setPedHeadBlendData(appearance.parents);
       proxy.client.setComponentVariation(2, appearance.hair.style);
       proxy.client.setHairColor(appearance.hair.color, appearance.hair.highlight);
       appearance.overlays.forEach((overlay, id) => {
@@ -44,7 +43,7 @@ proxy.client.loadCharacterCreation = () => {
 
   view.setAppearance = (data: Parents) => {
     appearance.parents = data;
-    proxy.client.setPedHeadBlendData(appearance);
+    proxy.client.setPedHeadBlendData(appearance.parents);
   };
 
   view.setHairstyle = (style: number) => {
