@@ -21,6 +21,8 @@ export interface Hair {
 export interface Overlay {
   value: number;
   opacity: number;
+  color: number;
+  highlight: number;
 }
 
 export interface Appearance {

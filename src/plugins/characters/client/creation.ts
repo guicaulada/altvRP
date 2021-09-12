@@ -2,9 +2,10 @@ import * as alt from 'alt-client';
 import * as proxy from 'core/client/proxy';
 import config from 'core/config/shared';
 import { Appearance, Parents } from './types';
+import * as utils from './utils';
 
 proxy.client.loadCharacterCreation = () => {
-  proxy.client.createCharacterCreationCam();
+  utils.createCharacterCreationCam();
 
   const appearance: Appearance = {
     model: 'mp_m_freemode_01',
@@ -24,18 +25,19 @@ proxy.client.loadCharacterCreation = () => {
   alt.showCursor(true);
   view.webview.focus();
 
-  proxy.client.setPedHeadBlendData();
+  utils.setPedHeadBlendData();
 
   view.setGender = async (gender: 'm' | 'f') => {
     appearance.model = `mp_${gender}_freemode_01`;
     proxy.server.changeModel(appearance.model);
     alt.setTimeout(() => {
-      proxy.client.setPedHeadBlendData(appearance.parents);
-      proxy.client.setComponentVariation(2, appearance.hair.style);
-      proxy.client.setHairColor(appearance.hair.color, appearance.hair.highlight);
+      utils.setPedHeadBlendData(appearance.parents);
+      utils.setComponentVariation(2, appearance.hair.style);
+      utils.setHairColor(appearance.hair.color, appearance.hair.highlight);
       appearance.overlays.forEach((overlay, id) => {
         if (overlay) {
-          proxy.client.setHeadOverlay(id, overlay.value, overlay.opacity);
+          utils.setHeadOverlay(id, overlay.value, overlay.opacity);
+          utils.setHeadOverlayColor(id, overlay.color, overlay.highlight);
         }
       });
     }, 1000);
@@ -43,22 +45,23 @@ proxy.client.loadCharacterCreation = () => {
 
   view.setAppearance = (data: Parents) => {
     appearance.parents = data;
-    proxy.client.setPedHeadBlendData(appearance.parents);
+    utils.setPedHeadBlendData(appearance.parents);
   };
 
   view.setHairstyle = (style: number) => {
     appearance.hair.style = style;
-    proxy.client.setComponentVariation(2, style);
+    utils.setComponentVariation(2, style);
   };
 
   view.setHairColor = (color: number, highlight: number) => {
     appearance.hair.color = color;
     appearance.hair.highlight = highlight;
-    proxy.client.setHairColor(color, highlight);
+    utils.setHairColor(color, highlight);
   };
 
-  view.setHeadOverlay = (id: number, value: number, opacity: number) => {
-    appearance.overlays[id] = { value, opacity };
-    proxy.client.setHeadOverlay(id, value, opacity);
+  view.setHeadOverlay = (id: number, value: number, opacity: number, color = 0, highlight = 0) => {
+    appearance.overlays[id] = { value, opacity, color, highlight };
+    utils.setHeadOverlay(id, value, opacity);
+    utils.setHeadOverlayColor(id, color, highlight);
   };
 };
