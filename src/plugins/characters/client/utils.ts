@@ -62,3 +62,13 @@ export const setHeadOverlayColor = (id: number, color: number, highlight: number
   else if (id == 5 || id == 8) type = 2;
   if (type) game.setPedHeadOverlayColor(pid, id, type, color, highlight);
 };
+
+export const setFaceFeature = (id: number, scale: number): void => {
+  const pid = alt.Player.local.scriptID;
+  game.setPedFaceFeature(pid, id, scale);
+};
+
+export const setEyesColor = (color: number): void => {
+  const pid = alt.Player.local.scriptID;
+  game.setPedEyeColor(pid, color);
+};

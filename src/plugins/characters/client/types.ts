@@ -25,9 +25,15 @@ export interface Overlay {
   highlight: number;
 }
 
+export interface FaceFeature {
+  scale: number;
+}
+
 export interface Appearance {
   model: FreemodeModel;
   hair: Hair;
+  eyes: number;
+  features: FaceFeature[];
   overlays: Overlay[];
   parents: Parents;
 }

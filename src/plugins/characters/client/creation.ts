@@ -10,7 +10,9 @@ proxy.client.loadCharacterCreation = () => {
   const appearance: Appearance = {
     model: 'mp_m_freemode_01',
     hair: { style: 0, color: 0, highlight: 0 },
+    eyes: 0,
     overlays: [],
+    features: [],
     parents: {
       faceMix: 0.5,
       skinMix: 0.5,
@@ -34,10 +36,16 @@ proxy.client.loadCharacterCreation = () => {
       utils.setPedHeadBlendData(appearance.parents);
       utils.setComponentVariation(2, appearance.hair.style);
       utils.setHairColor(appearance.hair.color, appearance.hair.highlight);
+      utils.setEyesColor(appearance.eyes);
       appearance.overlays.forEach((overlay, id) => {
         if (overlay) {
           utils.setHeadOverlay(id, overlay.value, overlay.opacity);
           utils.setHeadOverlayColor(id, overlay.color, overlay.highlight);
+        }
+      });
+      appearance.features.forEach((feature, id) => {
+        if (feature) {
+          utils.setFaceFeature(id, feature.scale);
         }
       });
     }, 1000);
@@ -63,5 +71,15 @@ proxy.client.loadCharacterCreation = () => {
     appearance.overlays[id] = { value, opacity, color, highlight };
     utils.setHeadOverlay(id, value, opacity);
     utils.setHeadOverlayColor(id, color, highlight);
+  };
+
+  view.setFaceFeature = (id: number, scale: number) => {
+    appearance.features[id] = { scale };
+    utils.setFaceFeature(id, scale);
+  };
+
+  view.setEyesColor = (color: number) => {
+    appearance.eyes = color;
+    utils.setEyesColor(color);
   };
 };
