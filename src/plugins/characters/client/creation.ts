@@ -82,4 +82,8 @@ proxy.client.loadCharacterCreation = () => {
     appearance.eyes = color;
     utils.setEyesColor(color);
   };
+
+  view.createCharacter = (firstName: string, lastName: string) => {
+    proxy.server.createCharacter(firstName, lastName, appearance);
+  };
 };

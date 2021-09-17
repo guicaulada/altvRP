@@ -29,7 +29,7 @@ api.get('/authorize', async (req, res) => {
     if (state && player) {
       const token = await getToken(req.query.code as string);
       const user = await getUser(token.access_token);
-      console.log(user);
+      proxy.local.setUser(player, user);
       alt.setTimeout(() => {
         proxy.client.closeLogin(player);
         alt.setTimeout(() => {
