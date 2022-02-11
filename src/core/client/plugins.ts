@@ -1,6 +1,7 @@
 import { getLogger } from 'core/shared/logger';
 import { Plugin } from 'core/shared/types';
 import * as proxy from './proxy';
+import * as alt from 'alt-client';
 
 const logger = getLogger('altvrp:plugins');
 const plugins = {} as { [key: string]: any };
@@ -18,6 +19,7 @@ proxy.client.loadPlugins = (pluginsList: Plugin[]) => {
       logger.info(`Loaded plugin ~y~${p.name}`);
     }
   });
+  alt.emitServer('pluginsLoaded');
 };
 
 export default plugins;

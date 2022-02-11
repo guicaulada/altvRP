@@ -19,7 +19,7 @@ proxy.server.getUser = (player) => {
   return users.get(player);
 };
 
-alt.on('playerConnect', (player) => {
+alt.onClient('pluginsLoaded', (player) => {
   logger.info(`Player "${player.name}" has joined the server`);
   proxy.client.loadLogin(
     player,
