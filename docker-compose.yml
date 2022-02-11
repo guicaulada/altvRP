@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  server:
+    platform: linux/x86_64
+    build: .
+    tty: true
+    stdin_open: true
+    env_file: .env
+    ports:
+      - "7788:7788/udp"
+      - "7788:7788/tcp"
+      - "7789:7789"
+      - "7790:7790"

@@ -15,7 +15,12 @@
     "build:views": "cd views && yarn next:build && cd ..",
     "build:server": "yarn build:clean && yarn build:src",
     "build:watch": "npx babel --watch src --out-dir dist --extensions .ts",
-    "build:src": "npx babel src --out-dir dist --extensions .ts"
+    "build:src": "npx babel src --out-dir dist --extensions .ts",
+    "install:views": "cd views && yarn install && cd ..",
+    "install:full": "yarn install && yarn install:views",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "docker:build": "yarn build && docker-compose up --build"
   },
   "_moduleAliases": {
     "core": "dist/core",
