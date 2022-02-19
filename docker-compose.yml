@@ -6,6 +6,8 @@ services:
     tty: true
     stdin_open: true
     env_file: .env
+    volumes:
+      - .:/opt/altv/resources/altvrp
     ports:
       - "7788:7788/udp"
       - "7788:7788/tcp"

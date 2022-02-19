@@ -42,24 +42,6 @@ RUN apt-get update
 RUN apt-get install -y apt-transport-https
 RUN apt-get install -y dotnet-sdk-6.0
 
-# Copy altvrp resource
-WORKDIR /opt/altv/resources/altvrp
-COPY dist dist
-COPY resource.cfg resource.cfg
-COPY package.json package.json
-COPY yarn.lock yarn.lock
-RUN yarn install --prod
-
-# Copy altvrp views
-WORKDIR /opt/altv/resources/altvrp/views
-COPY views/.next .next
-COPY views/package.json package.json
-COPY views/yarn.lock yarn.lock
-RUN yarn install --prod
-
-# Return to default working directory
-WORKDIR /opt/altv
-
 # Expose necessary ports
 EXPOSE 7788/udp
 EXPOSE 7788/tcp
